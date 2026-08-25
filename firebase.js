@@ -13,4 +13,4 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
-const auth = firebase.auth();
+const auth = typeof firebase.auth === 'function' ? firebase.auth() : null;

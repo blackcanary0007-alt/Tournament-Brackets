@@ -269,14 +269,16 @@
     let currentData = {};
 
     // Authenticate anonymously to satisfy write permissions (auth != null)
-    firebase.auth().signInAnonymously()
-      .then(() => {
-        console.log("Authenticated anonymously successfully.");
-      })
-      .catch((error) => {
-        console.error("Anonymous authentication failed: ", error);
-        alert("Anonymous Auth Failed!\n\nTo allow edits under 'auth != null' rules, please go to your Firebase Console under 'Authentication' -> 'Sign-in method' and enable 'Anonymous'.\n\nError details: " + error.message);
-      });
+    if (typeof firebase.auth === 'function') {
+      firebase.auth().signInAnonymously()
+        .then(() => {
+          console.log("Authenticated anonymously successfully.");
+        })
+        .catch((error) => {
+          console.error("Anonymous authentication failed: ", error);
+          alert("Anonymous Auth Failed!\n\nTo allow edits under 'auth != null' rules, please go to your Firebase Console under 'Authentication' -> 'Sign-in method' and enable 'Anonymous'.\n\nError details: " + error.message);
+        });
+    }
 
     const MATCHES = [
       // Round of 16 -> Quarterfinals
