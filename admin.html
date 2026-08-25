@@ -265,6 +265,36 @@
               🏆 CHAMPION
             </div>
           </div>
+
+          <!-- 3rd Place Chooser -->
+          <div id="third-place-chooser" class="w-full glass-card rounded-xl p-3 mt-3 border border-slate-800/60 flex flex-col gap-1.5 relative z-10 hidden">
+            <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center">Select 3rd Place</label>
+            <select id="third-place-select" onchange="setThirdPlace(this.value)" class="w-full bg-[#080e22]/80 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-blue-500/50">
+              <option value="???">-- Select --</option>
+            </select>
+          </div>
+
+          <!-- Podium Standings -->
+          <div id="podium-card" class="w-full glass-card rounded-xl p-3 mt-4 border border-slate-800/60 flex flex-col gap-2 relative z-10 hidden">
+            <div class="text-[9px] font-black text-slate-500 uppercase tracking-widest text-center border-b border-slate-800/50 pb-1.5 mb-1">
+              🏆 Final Standings
+            </div>
+            <!-- 1st Place -->
+            <div class="flex items-center justify-between text-xs font-bold text-amber-400 bg-amber-500/5 px-2 py-1 rounded-md border border-amber-500/10">
+              <span>🥇 1st</span>
+              <span id="podium-1st" class="uppercase truncate max-w-[110px] text-right">???</span>
+            </div>
+            <!-- 2nd Place -->
+            <div class="flex items-center justify-between text-xs font-semibold text-slate-300 bg-slate-400/5 px-2 py-1 rounded-md border border-slate-400/10">
+              <span>🥈 2nd</span>
+              <span id="podium-2nd" class="uppercase truncate max-w-[110px] text-right">???</span>
+            </div>
+            <!-- 3rd Place -->
+            <div class="flex items-center justify-between text-xs font-semibold text-amber-700 bg-amber-700/5 px-2 py-1 rounded-md border border-amber-700/10">
+              <span>🥉 3rd</span>
+              <span id="podium-3rd" class="uppercase truncate max-w-[110px] text-right">???</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -352,6 +382,71 @@
           }
         }
       }
+
+      // Render Podium Standings dynamically
+      const winner = currentData['winner'];
+      const f1 = currentData['f1'];
+      const f2 = currentData['f2'];
+      const third = currentData['third_place'] || '???';
+      const hasChampion = winner && winner !== 'CHAMPION' && winner !== '???';
+      const podiumCard = document.getElementById('podium-card');
+      const thirdChooser = document.getElementById('third-place-chooser');
+
+      if (hasChampion) {
+        if (podiumCard) podiumCard.classList.remove('hidden');
+        if (thirdChooser) thirdChooser.classList.remove('hidden');
+        
+        document.getElementById('podium-1st').innerText = winner;
+        const second = (winner === f1) ? f2 : f1;
+        document.getElementById('podium-2nd').innerText = second && second !== '???' ? second : '???';
+        document.getElementById('podium-3rd').innerText = third;
+
+        // Determine the two Semifinal losers
+        const sf1_name = currentData['sf1'];
+        const sf2_name = currentData['sf2'];
+        const f1_name = currentData['f1'];
+        let sf_loser_1 = null;
+        if (f1_name && f1_name !== '???') {
+          if (f1_name === sf1_name) sf_loser_1 = sf2_name;
+          else if (f1_name === sf2_name) sf_loser_1 = sf1_name;
+        }
+
+        const sf3_name = currentData['sf3'];
+        const sf4_name = currentData['sf4'];
+        const f2_name = currentData['f2'];
+        let sf_loser_2 = null;
+        if (f2_name && f2_name !== '???') {
+          if (f2_name === sf3_name) sf_loser_2 = sf4_name;
+          else if (f2_name === sf4_name) sf_loser_2 = sf3_name;
+        }
+
+        // Populate the dropdown
+        const select = document.getElementById('third-place-select');
+        if (select) {
+          select.innerHTML = '<option value="???">-- Select --</option>';
+          if (sf_loser_1 && sf_loser_1 !== '???') {
+            const opt1 = document.createElement('option');
+            opt1.value = sf_loser_1;
+            opt1.innerText = sf_loser_1;
+            if (third === sf_loser_1) opt1.selected = true;
+            select.appendChild(opt1);
+          }
+          if (sf_loser_2 && sf_loser_2 !== '???') {
+            const opt2 = document.createElement('option');
+            opt2.value = sf_loser_2;
+            opt2.innerText = sf_loser_2;
+            if (third === sf_loser_2) opt2.selected = true;
+            select.appendChild(opt2);
+          }
+        }
+      } else {
+        if (podiumCard) podiumCard.classList.add('hidden');
+        if (thirdChooser) thirdChooser.classList.add('hidden');
+      }
+    }
+
+    function setThirdPlace(val) {
+      db.ref('bracket').update({ third_place: val }).catch(err => alert("Failed to save 3rd place: " + err.message));
     }
 
     function renderRoster() {
