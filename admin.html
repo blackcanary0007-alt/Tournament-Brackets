@@ -321,26 +321,39 @@
     function renderRoster() {
       const rosterGrid = document.getElementById('rosterGrid');
       if (!rosterGrid) return;
-      rosterGrid.innerHTML = '';
       
-      let count = 0;
-      for (let i = 1; i <= 16; i++) {
-        const key = `p${i}`;
-        const name = currentData[key] || `PLAYER${i}`;
-        count++;
+      // If roster grid is empty, render it fully
+      if (rosterGrid.children.length === 0) {
+        let count = 0;
+        for (let i = 1; i <= 16; i++) {
+          const key = `p${i}`;
+          const name = currentData[key] || `PLAYER${i}`;
+          count++;
 
-        const card = document.createElement('div');
-        card.className = "glass-card rounded-xl p-2.5 flex items-center justify-between gap-2 shadow-sm border border-slate-800/40";
-        card.innerHTML = `
-          <span class="text-blue-400 font-extrabold text-xs">#${i}</span>
-          <input type="text" value="${name}" onchange="updateRosterName('${key}', this.value)" 
-            class="bg-transparent text-slate-100 font-bold text-xs uppercase focus:outline-none w-full truncate pl-1 border-b border-transparent focus:border-blue-500/50">
-          <button onclick="clearRosterSlot('${key}')" class="text-rose-500/70 hover:text-rose-400 text-xs font-bold border border-rose-500/20 hover:border-rose-500/50 rounded px-1.5 py-0.5 transition">✕</button>
-        `;
-        rosterGrid.appendChild(card);
+          const card = document.createElement('div');
+          card.className = "glass-card rounded-xl p-2.5 flex items-center justify-between gap-2 shadow-sm border border-slate-800/40";
+          card.innerHTML = `
+            <span class="text-blue-400 font-extrabold text-xs">#${i}</span>
+            <input type="text" value="${name}" data-key="${key}" onchange="updateRosterName('${key}', this.value)" 
+              class="bg-transparent text-slate-100 font-bold text-xs uppercase focus:outline-none w-full truncate pl-1 border-b border-transparent focus:border-blue-500/50">
+            <button onclick="clearRosterSlot('${key}')" class="text-rose-500/70 hover:text-rose-400 text-xs font-bold border border-rose-500/20 hover:border-rose-500/50 rounded px-1.5 py-0.5 transition">✕</button>
+          `;
+          rosterGrid.appendChild(card);
+        }
+        const countEl = document.getElementById('rosterCount');
+        if (countEl) countEl.innerText = count;
+      } else {
+        // If it already has children, update them in place!
+        const inputs = rosterGrid.querySelectorAll('input[data-key]');
+        inputs.forEach(input => {
+          const key = input.getAttribute('data-key');
+          const dbValue = currentData[key] || `PLAYER${key.slice(1)}`;
+          // Only update if the user is not currently focusing/editing this input
+          if (document.activeElement !== input) {
+            input.value = dbValue;
+          }
+        });
       }
-      const countEl = document.getElementById('rosterCount');
-      if (countEl) countEl.innerText = count;
     }
 
     function applyDynamicStyles() {
