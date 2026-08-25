@@ -100,7 +100,14 @@
 </head>
 <body class="bg-[#04060f] text-slate-100 min-h-screen p-6 font-sans flex flex-col items-center">
 
-  <div class="w-full max-w-[1450px] flex flex-col gap-6">
+  <div class="flex items-center gap-6 max-w-full">
+    <!-- Left Flanking Image -->
+    <div class="hidden xl:flex flex-col items-center justify-center w-48 shrink-0">
+      <img src="Assets/BlackCanary007.jpeg" alt="BlackCanary007" class="w-full rounded-2xl border border-slate-800/80 shadow-[0_0_25px_rgba(88,101,242,0.15)] object-cover aspect-square">
+    </div>
+
+    <!-- Main Wrapper Container -->
+    <div class="w-full max-w-[1450px] flex flex-col gap-6">
 
     <!-- Top Roster Manager -->
     <div class="glass-card rounded-2xl p-6 shadow-xl">
@@ -172,10 +179,7 @@
           </defs>
         </svg>
         
-        <!-- Left Sidebar Image -->
-        <div class="flex flex-col items-center justify-center w-40 self-center z-10 shrink-0">
-          <img src="Assets/BlackCanary007.jpeg" alt="BlackCanary007" class="w-full rounded-2xl border border-slate-800 shadow-[0_0_20px_rgba(0,0,0,0.5)] object-cover aspect-square">
-        </div>
+
 
         <!-- ROUND OF 16 -->
         <div class="flex flex-col w-48">
@@ -313,12 +317,13 @@
         </div>
       </div>
 
-      <!-- Right Sidebar Image -->
-      <div class="flex flex-col items-center justify-center w-40 self-center z-10 shrink-0">
-        <img src="Assets/GREEKFREAK.jpeg" alt="GREEKFREAK" class="w-full rounded-2xl border border-slate-800 shadow-[0_0_20px_rgba(0,0,0,0.5)] object-cover aspect-square">
       </div>
-
+      </div>
     </div>
+
+    <!-- Right Flanking Image -->
+    <div class="hidden xl:flex flex-col items-center justify-center w-48 shrink-0">
+      <img src="Assets/GREEKFREAK.jpeg" alt="GREEKFREAK" class="w-full rounded-2xl border border-slate-800/80 shadow-[0_0_25px_rgba(145,70,255,0.15)] object-cover aspect-square">
     </div>
   </div>
 
