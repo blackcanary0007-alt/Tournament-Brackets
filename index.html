@@ -90,6 +90,13 @@
       background: rgba(148, 163, 184, 0.3);
     }
   </style>
+  <script>
+    function handleIconError(img) {
+      img.style.display = 'none';
+      const fallback = img.nextElementSibling;
+      if (fallback) fallback.classList.remove('hidden');
+    }
+  </script>
 </head>
 <body class="bg-[#04060f] text-slate-100 min-h-screen p-6 font-sans flex flex-col justify-center items-center">
 
@@ -107,6 +114,91 @@
         <h1 class="text-2xl font-black tracking-wider text-slate-100 uppercase leading-none">
           TOURNAMENT <span class="text-emerald-400">BRACKET</span>
         </h1>
+      </div>
+    </div>
+
+    <!-- Tournament Rewards Section -->
+    <div class="mb-10 pb-8 border-b border-slate-800/40 min-w-[1150px]">
+      <div class="flex justify-between items-center mb-6">
+        <div>
+          <h2 class="text-xs font-black tracking-widest text-amber-500 uppercase flex items-center gap-2">
+            🏆 Tournament Rewards / Αμοιβές Διαγωνισμού
+          </h2>
+          <p class="text-[11px] text-slate-500 mt-1">Επίσημα έπαθλα & αμοιβές για τους νικητές του διαγωνισμού Lumena!</p>
+        </div>
+        <div class="bg-amber-500/10 border border-amber-500/30 text-amber-400 px-3 py-1 rounded-full text-[10px] font-black tracking-wider uppercase flex items-center gap-1.5 shadow-[0_0_10px_rgba(245,158,11,0.1)]">
+          <span class="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse"></span>
+          Official Prizes
+        </div>
+      </div>
+
+      <div class="grid grid-cols-4 gap-4">
+        <!-- 1st Place -->
+        <div class="glass-card rounded-xl p-4 flex items-center gap-3 border border-amber-500/20 shadow-[0_0_15px_rgba(245,158,11,0.05)]">
+          <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center shadow-inner">
+            <img src="1st.png" alt="🥇" class="w-7 h-7 object-contain" onerror="handleIconError(this)">
+            <span class="hidden text-xl">🥇</span>
+          </div>
+          <div>
+            <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">1st Place / 1η Θέση</div>
+            <div class="text-base font-black text-amber-400 flex items-center gap-1.5">
+              70€ 
+              <img src="cash.png" alt="cash" class="w-4 h-4 object-contain" onerror="handleIconError(this)">
+              <span class="hidden text-xs font-medium text-slate-400">cash</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2nd Place -->
+        <div class="glass-card rounded-xl p-4 flex items-center gap-3 border border-slate-400/10">
+          <div class="w-10 h-10 rounded-lg bg-slate-400/10 flex items-center justify-center">
+            <img src="2nd.png" alt="🥈" class="w-7 h-7 object-contain" onerror="handleIconError(this)">
+            <span class="hidden text-xl">🥈</span>
+          </div>
+          <div>
+            <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">2nd Place / 2η Θέση</div>
+            <div class="text-base font-black text-slate-300 flex items-center gap-1.5">
+              30€ 
+              <img src="cash.png" alt="cash" class="w-4 h-4 object-contain" onerror="handleIconError(this)">
+              <span class="hidden text-xs font-medium text-slate-400">cash</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3rd Place -->
+        <div class="glass-card rounded-xl p-4 flex items-center gap-3 border border-amber-700/10">
+          <div class="w-10 h-10 rounded-lg bg-amber-700/10 flex items-center justify-center">
+            <img src="3rd.png" alt="🥉" class="w-7 h-7 object-contain" onerror="handleIconError(this)">
+            <span class="hidden text-xl">🥉</span>
+          </div>
+          <div>
+            <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">3rd Place / 3η Θέση</div>
+            <div class="text-base font-black text-amber-600 flex items-center gap-1.5">
+              500 
+              <img src="prism.png" alt="Prisms" class="w-4 h-4 object-contain" onerror="handleIconError(this)">
+              <span class="hidden text-xs font-medium text-slate-400">Prisms</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4th Place -->
+        <div class="glass-card rounded-xl p-4 flex items-center gap-3 border border-teal-500/10">
+          <div class="w-10 h-10 rounded-lg bg-teal-500/10 flex items-center justify-center">
+            <img src="4th.png" alt="🏅" class="w-7 h-7 object-contain" onerror="handleIconError(this)">
+            <span class="hidden text-xl">🏅</span>
+          </div>
+          <div>
+            <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">4th Place / 4η Θέση</div>
+            <div class="text-xs font-black text-teal-400 leading-tight">
+              Δωρεάν Συμμετοχή 
+              <span class="text-[10px] font-semibold text-slate-400 block mt-0.5 flex items-center gap-0.5">
+                +100 
+                <img src="prism.png" alt="Prisms" class="w-3.5 h-3.5 object-contain" onerror="handleIconError(this)">
+                <span class="hidden text-[9px] text-slate-400">Prisms</span>
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -239,57 +331,6 @@
           <p class="text-[11px] text-slate-500 mt-1">Επίσημα έπαθλα & αμοιβές για τους νικητές του διαγωνισμού Lumena!</p>
         </div>
         <div class="bg-amber-500/10 border border-amber-500/30 text-amber-400 px-3 py-1 rounded-full text-[10px] font-black tracking-wider uppercase flex items-center gap-1.5 shadow-[0_0_10px_rgba(245,158,11,0.1)]">
-          <span class="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse"></span>
-          Official Prizes
-        </div>
-      </div>
-
-      <div class="grid grid-cols-4 gap-4">
-        <!-- 1st Place -->
-        <div class="glass-card rounded-xl p-4 flex items-center gap-3 border border-amber-500/20 shadow-[0_0_15px_rgba(245,158,11,0.05)]">
-          <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 text-lg font-black shadow-inner">
-            🥇
-          </div>
-          <div>
-            <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">1st Place / 1η Θέση</div>
-            <div class="text-base font-black text-amber-400">70€ <span class="text-xs font-medium text-slate-400">cash</span></div>
-          </div>
-        </div>
-
-        <!-- 2nd Place -->
-        <div class="glass-card rounded-xl p-4 flex items-center gap-3 border border-slate-400/10">
-          <div class="w-10 h-10 rounded-lg bg-slate-400/10 flex items-center justify-center text-slate-300 text-lg font-black">
-            🥈
-          </div>
-          <div>
-            <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">2nd Place / 2η Θέση</div>
-            <div class="text-base font-black text-slate-300">30€ <span class="text-xs font-medium text-slate-400">cash</span></div>
-          </div>
-        </div>
-
-        <!-- 3rd Place -->
-        <div class="glass-card rounded-xl p-4 flex items-center gap-3 border border-amber-700/10">
-          <div class="w-10 h-10 rounded-lg bg-amber-700/10 flex items-center justify-center text-amber-600 text-lg font-black">
-            🥉
-          </div>
-          <div>
-            <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">3rd Place / 3η Θέση</div>
-            <div class="text-base font-black text-amber-600">500 <span class="text-xs font-medium text-slate-400">Prisms</span></div>
-          </div>
-        </div>
-
-        <!-- 4th Place -->
-        <div class="glass-card rounded-xl p-4 flex items-center gap-3 border border-teal-500/10">
-          <div class="w-10 h-10 rounded-lg bg-teal-500/10 flex items-center justify-center text-teal-400 text-lg font-black">
-            🏅
-          </div>
-          <div>
-            <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">4th Place / 4η Θέση</div>
-            <div class="text-xs font-black text-teal-400 leading-tight">Δωρεάν Συμμετοχή <span class="text-[10px] font-semibold text-slate-400 block">+100 Prisms</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
