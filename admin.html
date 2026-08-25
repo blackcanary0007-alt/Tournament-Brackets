@@ -335,7 +335,7 @@
           card.innerHTML = `
             <span class="text-blue-400 font-extrabold text-xs">#${i}</span>
             <input type="text" value="${name}" data-key="${key}" onchange="updateRosterName('${key}', this.value)" 
-              class="bg-transparent text-slate-100 font-bold text-xs uppercase focus:outline-none w-full truncate pl-1 border-b border-transparent focus:border-blue-500/50">
+              class="bg-transparent text-slate-100 font-bold text-xs uppercase focus:outline-none flex-1 min-w-0 truncate pl-1 border-b border-transparent focus:border-blue-500/50">
             <button onclick="clearRosterSlot('${key}')" class="text-rose-500/70 hover:text-rose-400 text-xs font-bold border border-rose-500/20 hover:border-rose-500/50 rounded px-1.5 py-0.5 transition">✕</button>
           `;
           rosterGrid.appendChild(card);
@@ -446,7 +446,7 @@
       }
 
       collectPropagation(targetId, oldTargetVal, name);
-      db.ref('bracket').update(propagationUpdates);
+      db.ref('bracket').update(propagationUpdates).catch(err => alert("Firebase write failed: " + err.message));
     }
 
     function updateRosterName(key, newName) {
@@ -471,7 +471,7 @@
       }
 
       collectPropagation(key, oldVal, formattedNewName);
-      db.ref('bracket').update(propagationUpdates);
+      db.ref('bracket').update(propagationUpdates).catch(err => alert("Firebase write failed: " + err.message));
     }
 
     function clearRosterSlot(key) {
@@ -495,7 +495,7 @@
       }
 
       collectPropagation(key, oldVal, '???');
-      db.ref('bracket').update(propagationUpdates);
+      db.ref('bracket').update(propagationUpdates).catch(err => alert("Firebase write failed: " + err.message));
     }
 
     function addParticipant() {
@@ -523,7 +523,7 @@
       for (let i = 1; i <= 2; i++) initial[`f${i}`] = '???';
       initial['winner'] = 'CHAMPION';
 
-      db.ref('bracket').set(initial);
+      db.ref('bracket').set(initial).catch(err => alert("Firebase write failed: " + err.message));
     }
 
     function drawBracketLines() {
