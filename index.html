@@ -1,60 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tournament Bracket</title>
-  <style>
-    body { font-family: Arial, sans-serif; background: #121212; color: #fff; padding: 20px; text-align: center; }
-    h1 { margin-bottom: 30px; }
-    .bracket { display: flex; justify-content: center; gap: 40px; margin-top: 20px; }
-    .round { display: flex; flex-direction: column; justify-content: space-around; }
-    .match { background: #1e1e1e; border: 1px solid #333; padding: 10px; margin: 10px 0; width: 160px; border-radius: 5px; }
-    .slot { padding: 5px; background: #2a2a2a; margin: 3px 0; border-radius: 3px; }
-  </style>
+  <title>Live Tournament Bracket</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col items-center p-6">
 
-  <h1>Tournament Bracket</h1>
-  <div class="bracket">
-    <!-- Semi Finals -->
-    <div class="round">
-      <h3>Semi-Finals</h3>
-      <div class="match">
-        <div class="slot" id="p1">Player 1</div>
-        <div class="slot" id="p2">Player 2</div>
+  <!-- Header -->
+  <header class="text-center my-8">
+    <h1 class="text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
+      CHAMPIONSHIP BRACKET
+    </h1>
+    <p class="text-slate-400 mt-2 text-sm">Real-time Tournament Tracking</p>
+  </header>
+
+  <!-- Bracket Container -->
+  <main class="w-full max-w-5xl flex flex-col md:flex-row justify-center items-center md:items-stretch gap-8 my-auto">
+    
+    <!-- Semi-Finals -->
+    <div class="flex flex-col justify-around gap-6 w-full max-w-xs">
+      <h2 class="text-xs font-bold uppercase tracking-widest text-slate-500 text-center">Semi-Finals</h2>
+      
+      <!-- Match 1 -->
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 shadow-lg hover:border-slate-700 transition">
+        <div id="p1" class="bg-slate-800/80 px-4 py-2.5 rounded-lg mb-2 font-semibold text-slate-200 border border-slate-700/50 flex justify-between items-center">
+          <span>Player 1</span>
+        </div>
+        <div id="p2" class="bg-slate-800/80 px-4 py-2.5 rounded-lg font-semibold text-slate-200 border border-slate-700/50 flex justify-between items-center">
+          <span>Player 2</span>
+        </div>
       </div>
-      <div class="match">
-        <div class="slot" id="p3">Player 3</div>
-        <div class="slot" id="p4">Player 4</div>
+
+      <!-- Match 2 -->
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 shadow-lg hover:border-slate-700 transition">
+        <div id="p3" class="bg-slate-800/80 px-4 py-2.5 rounded-lg mb-2 font-semibold text-slate-200 border border-slate-700/50 flex justify-between items-center">
+          <span>Player 3</span>
+        </div>
+        <div id="p4" class="bg-slate-800/80 px-4 py-2.5 rounded-lg font-semibold text-slate-200 border border-slate-700/50 flex justify-between items-center">
+          <span>Player 4</span>
+        </div>
       </div>
     </div>
+
     <!-- Finals -->
-    <div class="round">
-      <h3>Finals</h3>
-      <div class="match">
-        <div class="slot" id="f1">TBD</div>
-        <div class="slot" id="f2">TBD</div>
+    <div class="flex flex-col justify-center gap-6 w-full max-w-xs">
+      <h2 class="text-xs font-bold uppercase tracking-widest text-slate-500 text-center">Grand Finals</h2>
+      
+      <div class="bg-slate-900 border border-blue-900/40 rounded-xl p-3 shadow-xl">
+        <div id="f1" class="bg-slate-800/80 px-4 py-2.5 rounded-lg mb-2 font-semibold text-slate-200 border border-slate-700/50">
+          TBD
+        </div>
+        <div id="f2" class="bg-slate-800/80 px-4 py-2.5 rounded-lg font-semibold text-slate-200 border border-slate-700/50">
+          TBD
+        </div>
       </div>
     </div>
-    <!-- Winner -->
-    <div class="round">
-      <h3>Champion</h3>
-      <div class="match">
-        <div class="slot" id="winner" style="background:#4CAF50; font-weight:bold;">TBD</div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Firebase Web SDKs -->
+    <!-- Champion -->
+    <div class="flex flex-col justify-center w-full max-w-xs">
+      <h2 class="text-xs font-bold uppercase tracking-widest text-amber-500 text-center mb-6">Champion</h2>
+      
+      <div class="bg-gradient-to-b from-amber-500/10 to-slate-900 border border-amber-500/30 rounded-xl p-4 text-center shadow-2xl">
+        <div class="text-3xl mb-1">🏆</div>
+        <div id="winner" class="bg-amber-500 text-slate-950 px-4 py-3 rounded-lg font-black text-lg shadow-lg tracking-wide uppercase">
+          TBD
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-  
-  <!-- Central Config File -->
   <script src="firebase.js"></script>
 
   <script>
-    // Listen for live database updates
     db.ref('bracket').on('value', (snapshot) => {
       const data = snapshot.val();
       if (data) {
