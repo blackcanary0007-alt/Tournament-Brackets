@@ -420,6 +420,7 @@
       propagationUpdates[targetId] = name;
 
       function collectPropagation(slotId, oldVal, newVal) {
+        if (!oldVal || oldVal === '???' || oldVal === 'CHAMPION') return;
         const match = MATCHES.find(m => m.alice === slotId || m.bob === slotId);
         if (match) {
           const tId = match.target;
@@ -444,6 +445,7 @@
       propagationUpdates[key] = formattedNewName;
 
       function collectPropagation(slotId, oldVal, newVal) {
+        if (!oldVal || oldVal === '???' || oldVal === 'CHAMPION') return;
         const match = MATCHES.find(m => m.alice === slotId || m.bob === slotId);
         if (match) {
           const tId = match.target;
@@ -467,6 +469,7 @@
       propagationUpdates[key] = '???';
 
       function collectPropagation(slotId, oldVal, newVal) {
+        if (!oldVal || oldVal === '???' || oldVal === 'CHAMPION') return;
         const match = MATCHES.find(m => m.alice === slotId || m.bob === slotId);
         if (match) {
           const tId = match.target;
