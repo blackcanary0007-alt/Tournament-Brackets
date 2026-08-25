@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <style>
+    body { background: #111; color: #fff; font-family: sans-serif; padding: 20px; }
+    .form-group { margin-bottom: 10px; }
+    input { padding: 8px; margin-right: 10px; background: #222; color: #fff; border: 1px solid #444; }
+    button { padding: 8px 16px; background: #00d2ff; border: none; font-weight: bold; cursor: pointer; }
+    #admin-panel { display: none; margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+  <div id="login-panel">
+    <h2>Admin Login</h2>
+    <input type="email" id="email" placeholder="Admin Email">
+    <input type="password" id="password" placeholder="Password">
+    <button id="login-btn">Login</button>
+  </div>
+
+  <div id="admin-panel">
+    <h2>Edit Bracket Slots</h2>
+    <div id="slots-editor"></div>
+    <button id="save-btn" style="margin-top: 15px;">Save Changes</button>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "YOUR_FIREBASE_API_KEY",
+      databaseURL: "YOUR_FIREBASE_DATABASE_URL",
+      projectId: "YOUR_PROJECT_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    document.getElementById('login-btn').addEventListener('click', () => {
+      const email = document.getElementById('email').value;
+      const pass = document.getElementById('password').value;
+      signInWithEmailAndPassword(auth, email, pass).catch(err => alert("Auth failed: " + err.message));
+    });
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        document.getElementById('login-panel').style.display = 'none';
+        document.getElementById('admin-panel').style.display = 'block';
+        loadEditor();
+      }
+    });
+
+    async function loadEditor() {
+      const snapshot = await get(ref(db, 'bracket/'));
+      const data = snapshot.val() || {};
+      const container = document.getElementById('slots-editor');
+      container.innerHTML = '';
+
+      for(let i = 1; i <= 16; i++) {
+        const div = document.createElement('div');
+        div.className = 'form-group';
+        div.innerHTML = `<label>Slot ${i}: </label><input type="text" id="slot_${i}" value="${data[`p${i}`] || ''}">`;
+        container.appendChild(div);
+      }
+    }
+
+    document.getElementById('save-btn').addEventListener('click', () => {
+      const updates = {};
+      for(let i = 1; i <= 16; i++) {
+        updates[`p${i}`] = document.getElementById(`slot_${i}`).value;
+      }
+      set(ref(db, 'bracket/'), updates)
+        .then(() => alert("Updated successfully!"))
+        .catch(err => alert("Error: " + err.message));
+    });
+  </script>
+</body>
+</html>
