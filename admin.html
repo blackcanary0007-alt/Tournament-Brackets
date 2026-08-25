@@ -261,11 +261,22 @@
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
   <script src="firebase.js"></script>
 
   <script>
     let currentData = {};
+
+    // Authenticate anonymously to satisfy write permissions (auth != null)
+    firebase.auth().signInAnonymously()
+      .then(() => {
+        console.log("Authenticated anonymously successfully.");
+      })
+      .catch((error) => {
+        console.error("Anonymous authentication failed: ", error);
+        alert("Anonymous Auth Failed!\n\nTo allow edits under 'auth != null' rules, please go to your Firebase Console under 'Authentication' -> 'Sign-in method' and enable 'Anonymous'.\n\nError details: " + error.message);
+      });
 
     const MATCHES = [
       // Round of 16 -> Quarterfinals
