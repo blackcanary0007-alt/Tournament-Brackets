@@ -5,13 +5,105 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin - Tournament Bracket</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    h1, h2, .font-black {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    /* Floating Animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-6px) rotate(1deg); }
+    }
+    .animate-float {
+      animation: float 4s ease-in-out infinite;
+    }
+    /* Glassmorphism Styles */
+    .glass-card {
+      background: rgba(13, 20, 38, 0.45);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .glass-card:hover {
+      border-color: rgba(255, 255, 255, 0.08);
+      background: rgba(13, 20, 38, 0.6);
+    }
+    /* Winner/Loser classes */
+    .slot-winner-blue {
+      background-color: rgba(59, 130, 246, 0.12) !important;
+      color: #93c5fd !important;
+      border-color: rgba(59, 130, 246, 0.4) !important;
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+      font-weight: 800 !important;
+    }
+    .slot-winner-emerald {
+      background-color: rgba(16, 185, 129, 0.12) !important;
+      color: #34d399 !important;
+      border-color: rgba(16, 185, 129, 0.4) !important;
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+      font-weight: 800 !important;
+    }
+    .slot-winner-purple {
+      background-color: rgba(168, 85, 247, 0.12) !important;
+      color: #c084fc !important;
+      border-color: rgba(168, 85, 247, 0.4) !important;
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
+      font-weight: 800 !important;
+    }
+    .slot-winner-amber {
+      background-color: rgba(245, 158, 11, 0.15) !important;
+      color: #fbbf24 !important;
+      border-color: rgba(245, 158, 11, 0.5) !important;
+      box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+      font-weight: 800 !important;
+    }
+    .slot-loser {
+      opacity: 0.35;
+      border-color: transparent !important;
+      background-color: rgba(15, 23, 42, 0.2) !important;
+      color: #475569 !important;
+    }
+    .b-slot {
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .b-slot:hover {
+      border-color: rgba(59, 130, 246, 0.5) !important;
+      background-color: rgba(59, 130, 246, 0.1) !important;
+      color: #e2e8f0 !important;
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.3);
+      border-radius: 999px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.15);
+      border-radius: 999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(148, 163, 184, 0.3);
+    }
+  </style>
 </head>
-<body class="bg-[#050811] text-slate-100 min-h-screen p-6 font-sans flex flex-col items-center">
+<body class="bg-[#04060f] text-slate-100 min-h-screen p-6 font-sans flex flex-col items-center">
 
   <div class="w-full max-w-[1450px] flex flex-col gap-6">
 
     <!-- Top Roster Manager -->
-    <div class="bg-[#080d1a] border border-slate-800 rounded-2xl p-6 shadow-xl">
+    <div class="glass-card rounded-2xl p-6 shadow-xl">
       <div class="flex justify-between items-center mb-6">
         <h2 class="text-emerald-400 font-bold text-lg flex items-center gap-2">
           ✏️ Editable Roster (<span id="rosterCount">16</span> Participants)
@@ -30,7 +122,7 @@
     </div>
 
     <!-- Interactive Bracket Board -->
-    <div class="bg-[#080d1a] border border-slate-800 rounded-2xl p-8 shadow-2xl overflow-x-auto">
+    <div class="bg-[#070b18]/95 border border-slate-800 rounded-2xl p-8 shadow-2xl overflow-x-auto">
       
       <!-- Top Header -->
       <div class="flex justify-between items-center mb-8 pb-4 border-b border-slate-800/50 min-w-[1150px]">
@@ -48,81 +140,103 @@
       </div>
 
       <!-- Bracket Board -->
-      <div class="flex justify-between items-start min-w-[1150px] gap-6">
+      <div id="bracket-board" class="flex justify-between items-start min-w-[1150px] gap-6 relative py-4">
+        
+        <!-- SVG Drawing Layer -->
+        <svg id="bracket-svg" class="absolute inset-0 pointer-events-none w-full h-full z-0">
+          <defs>
+            <filter id="glow-blue" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+            <filter id="glow-emerald" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+            <filter id="glow-purple" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+            <filter id="glow-amber" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="4" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+          </defs>
+        </svg>
         
         <!-- ROUND OF 16 -->
         <div class="flex flex-col gap-[14px] w-48">
-          <div class="bg-[#111827] border border-slate-700/40 rounded-lg p-1.5 shadow">
-            <div id="p1" onclick="advancePlayer('p1', 'q1')" class="b-slot">PLAYER1</div>
-            <div id="p2" onclick="advancePlayer('p2', 'q1')" class="b-slot mt-1">PLAYER2</div>
+          <div class="glass-card rounded-xl p-2 relative z-10">
+            <div id="p1" onclick="advancePlayer('p1', 'q1')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">PLAYER1</div>
+            <div id="p2" onclick="advancePlayer('p2', 'q1')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">PLAYER2</div>
           </div>
-          <div class="bg-[#111827] border border-slate-700/40 rounded-lg p-1.5 shadow">
-            <div id="p3" onclick="advancePlayer('p3', 'q2')" class="b-slot">PLAYER3</div>
-            <div id="p4" onclick="advancePlayer('p4', 'q2')" class="b-slot mt-1">PLAYER4</div>
+          <div class="glass-card rounded-xl p-2 relative z-10">
+            <div id="p3" onclick="advancePlayer('p3', 'q2')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">PLAYER3</div>
+            <div id="p4" onclick="advancePlayer('p4', 'q2')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">PLAYER4</div>
           </div>
-          <div class="bg-[#111827] border border-slate-700/40 rounded-lg p-1.5 shadow">
-            <div id="p5" onclick="advancePlayer('p5', 'q3')" class="b-slot">PLAYER5</div>
-            <div id="p6" onclick="advancePlayer('p6', 'q3')" class="b-slot mt-1">PLAYER6</div>
+          <div class="glass-card rounded-xl p-2 relative z-10">
+            <div id="p5" onclick="advancePlayer('p5', 'q3')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">PLAYER5</div>
+            <div id="p6" onclick="advancePlayer('p6', 'q3')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">PLAYER6</div>
           </div>
-          <div class="bg-[#111827] border border-slate-700/40 rounded-lg p-1.5 shadow">
-            <div id="p7" onclick="advancePlayer('p7', 'q4')" class="b-slot">PLAYER7</div>
-            <div id="p8" onclick="advancePlayer('p8', 'q4')" class="b-slot mt-1">PLAYER8</div>
+          <div class="glass-card rounded-xl p-2 relative z-10">
+            <div id="p7" onclick="advancePlayer('p7', 'q4')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">PLAYER7</div>
+            <div id="p8" onclick="advancePlayer('p8', 'q4')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">PLAYER8</div>
           </div>
-          <div class="bg-[#111827] border border-slate-700/40 rounded-lg p-1.5 shadow">
-            <div id="p9" onclick="advancePlayer('p9', 'q5')" class="b-slot">PLAYER9</div>
-            <div id="p10" onclick="advancePlayer('p10', 'q5')" class="b-slot mt-1">PLAYER10</div>
+          <div class="glass-card rounded-xl p-2 relative z-10">
+            <div id="p9" onclick="advancePlayer('p9', 'q5')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">PLAYER9</div>
+            <div id="p10" onclick="advancePlayer('p10', 'q5')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">PLAYER10</div>
           </div>
-          <div class="bg-[#111827] border border-slate-700/40 rounded-lg p-1.5 shadow">
-            <div id="p11" onclick="advancePlayer('p11', 'q6')" class="b-slot">PLAYER11</div>
-            <div id="p12" onclick="advancePlayer('p12', 'q6')" class="b-slot mt-1">PLAYER12</div>
+          <div class="glass-card rounded-xl p-2 relative z-10">
+            <div id="p11" onclick="advancePlayer('p11', 'q6')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">PLAYER11</div>
+            <div id="p12" onclick="advancePlayer('p12', 'q6')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">PLAYER12</div>
           </div>
-          <div class="bg-[#111827] border border-slate-700/40 rounded-lg p-1.5 shadow">
-            <div id="p13" onclick="advancePlayer('p13', 'q7')" class="b-slot">PLAYER13</div>
-            <div id="p14" onclick="advancePlayer('p14', 'q7')" class="b-slot mt-1">PLAYER14</div>
+          <div class="glass-card rounded-xl p-2 relative z-10">
+            <div id="p13" onclick="advancePlayer('p13', 'q7')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">PLAYER13</div>
+            <div id="p14" onclick="advancePlayer('p14', 'q7')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">PLAYER14</div>
           </div>
-          <div class="bg-[#111827] border border-slate-700/40 rounded-lg p-1.5 shadow">
-            <div id="p15" onclick="advancePlayer('p15', 'q8')" class="b-slot">PLAYER15</div>
-            <div id="p16" onclick="advancePlayer('p16', 'q8')" class="b-slot mt-1">PLAYER16</div>
+          <div class="glass-card rounded-xl p-2 relative z-10">
+            <div id="p15" onclick="advancePlayer('p15', 'q8')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">PLAYER15</div>
+            <div id="p16" onclick="advancePlayer('p16', 'q8')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">PLAYER16</div>
           </div>
         </div>
 
         <!-- QUARTERFINALS -->
         <div class="flex flex-col gap-[92px] pt-[32px] w-48">
-          <div class="bg-[#111827] border border-slate-700/40 rounded-lg p-1.5 shadow">
-            <div id="q1" onclick="advancePlayer('q1', 'sf1')" class="b-slot">???</div>
-            <div id="q2" onclick="advancePlayer('q2', 'sf1')" class="b-slot mt-1">???</div>
+          <div class="glass-card rounded-xl p-2 relative z-10">
+            <div id="q1" onclick="advancePlayer('q1', 'sf1')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">???</div>
+            <div id="q2" onclick="advancePlayer('q2', 'sf1')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">???</div>
           </div>
-          <div class="bg-[#111827] border border-slate-700/40 rounded-lg p-1.5 shadow">
-            <div id="q3" onclick="advancePlayer('q3', 'sf2')" class="b-slot">???</div>
-            <div id="q4" onclick="advancePlayer('q4', 'sf2')" class="b-slot mt-1">???</div>
+          <div class="glass-card rounded-xl p-2 relative z-10">
+            <div id="q3" onclick="advancePlayer('q3', 'sf2')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">???</div>
+            <div id="q4" onclick="advancePlayer('q4', 'sf2')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">???</div>
           </div>
-          <div class="bg-[#111827] border border-slate-700/40 rounded-lg p-1.5 shadow">
-            <div id="q5" onclick="advancePlayer('q5', 'sf3')" class="b-slot">???</div>
-            <div id="q6" onclick="advancePlayer('q6', 'sf3')" class="b-slot mt-1">???</div>
+          <div class="glass-card rounded-xl p-2 relative z-10">
+            <div id="q5" onclick="advancePlayer('q5', 'sf3')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">???</div>
+            <div id="q6" onclick="advancePlayer('q6', 'sf3')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">???</div>
           </div>
-          <div class="bg-[#111827] border border-slate-700/40 rounded-lg p-1.5 shadow">
-            <div id="q7" onclick="advancePlayer('q7', 'sf4')" class="b-slot">???</div>
-            <div id="q8" onclick="advancePlayer('q8', 'sf4')" class="b-slot mt-1">???</div>
+          <div class="glass-card rounded-xl p-2 relative z-10">
+            <div id="q7" onclick="advancePlayer('q7', 'sf4')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">???</div>
+            <div id="q8" onclick="advancePlayer('q8', 'sf4')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">???</div>
           </div>
         </div>
 
         <!-- SEMIFINALS -->
         <div class="flex flex-col gap-[248px] pt-[110px] w-48">
-          <div class="bg-[#111827] border border-slate-700/40 rounded-lg p-1.5 shadow">
-            <div id="sf1" onclick="advancePlayer('sf1', 'f1')" class="b-slot">???</div>
-            <div id="sf2" onclick="advancePlayer('sf2', 'f1')" class="b-slot mt-1">???</div>
+          <div class="glass-card rounded-xl p-2 relative z-10">
+            <div id="sf1" onclick="advancePlayer('sf1', 'f1')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">???</div>
+            <div id="sf2" onclick="advancePlayer('sf2', 'f1')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">???</div>
           </div>
-          <div class="bg-[#111827] border border-slate-700/40 rounded-lg p-1.5 shadow">
-            <div id="sf3" onclick="advancePlayer('sf3', 'f2')" class="b-slot">???</div>
-            <div id="sf4" onclick="advancePlayer('sf4', 'f2')" class="b-slot mt-1">???</div>
+          <div class="glass-card rounded-xl p-2 relative z-10">
+            <div id="sf3" onclick="advancePlayer('sf3', 'f2')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">???</div>
+            <div id="sf4" onclick="advancePlayer('sf4', 'f2')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">???</div>
           </div>
         </div>
 
         <!-- FINALS -->
         <div class="flex flex-col pt-[266px] w-48">
-          <div class="bg-[#111827] border border-slate-700/40 rounded-lg p-1.5 shadow">
-            <div id="f1" onclick="advancePlayer('f1', 'winner')" class="b-slot">???</div>
-            <div id="f2" onclick="advancePlayer('f2', 'winner')" class="b-slot mt-1">???</div>
+          <div class="glass-card rounded-xl p-2 relative z-10">
+            <div id="f1" onclick="advancePlayer('f1', 'winner')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">???</div>
+            <div id="f2" onclick="advancePlayer('f2', 'winner')" class="b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">???</div>
           </div>
         </div>
 
@@ -130,14 +244,14 @@
         <div class="flex flex-col items-center pt-[130px] w-52">
           <div class="text-xs font-black tracking-widest text-amber-500 uppercase mb-4 text-center">CHAMPION</div>
           <div class="relative flex items-center justify-center mb-4">
-            <div class="absolute w-16 h-16 bg-amber-500/20 rounded-full blur-md"></div>
-            <div class="relative w-14 h-14 bg-gradient-to-b from-purple-500 to-indigo-900 rounded-full flex items-center justify-center border-2 border-purple-400 shadow-[0_0_15px_rgba(168,85,247,0.5)] text-2xl">
-              🔮
+            <div class="absolute w-16 h-16 bg-amber-500/20 rounded-full blur-md animate-pulse"></div>
+            <div class="relative w-14 h-14 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(245,158,11,0.4)] animate-float">
+              <img src="crystal_epic.webp" alt="Champion Trophy" class="w-full h-full object-contain">
             </div>
           </div>
-          <div class="w-full bg-[#111827] border-2 border-amber-500/80 rounded-lg p-1.5 shadow-[0_0_20px_rgba(245,158,11,0.25)]">
-            <div id="winner" class="bg-amber-500 text-slate-950 px-3 py-2 rounded text-sm font-black text-center uppercase tracking-wider truncate">
-              CHAMPION
+          <div class="w-full glass-card rounded-xl p-2 relative z-10">
+            <div id="winner" class="bg-slate-900/40 border border-slate-800/60 text-slate-400 px-3 py-2 rounded-lg text-sm font-bold text-center uppercase tracking-wider truncate transition-all duration-300">
+              🏆 CHAMPION
             </div>
           </div>
         </div>
@@ -146,33 +260,6 @@
     </div>
   </div>
 
-  <style>
-    .b-slot {
-      background-color: #1f293d;
-      padding: 0.375rem 0.75rem;
-      border-radius: 0.25rem;
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: #e2e8f0;
-      text-transform: uppercase;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      border: 1px solid transparent;
-    }
-    .b-slot:hover {
-      border-color: #3b82f6;
-      background-color: #2b3954;
-    }
-    .b-slot.winner-active {
-      border-color: #10b981 !important;
-      box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
-      background-color: #1f293d;
-    }
-  </style>
-
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
   <script src="firebase.js"></script>
@@ -180,23 +267,60 @@
   <script>
     let currentData = {};
 
+    const MATCHES = [
+      // Round of 16 -> Quarterfinals
+      { alice: 'p1', bob: 'p2', target: 'q1', color: '#3b82f6', glowClass: 'glow-blue' },
+      { alice: 'p3', bob: 'p4', target: 'q2', color: '#3b82f6', glowClass: 'glow-blue' },
+      { alice: 'p5', bob: 'p6', target: 'q3', color: '#3b82f6', glowClass: 'glow-blue' },
+      { alice: 'p7', bob: 'p8', target: 'q4', color: '#3b82f6', glowClass: 'glow-blue' },
+      { alice: 'p9', bob: 'p10', target: 'q5', color: '#3b82f6', glowClass: 'glow-blue' },
+      { alice: 'p11', bob: 'p12', target: 'q6', color: '#3b82f6', glowClass: 'glow-blue' },
+      { alice: 'p13', bob: 'p14', target: 'q7', color: '#3b82f6', glowClass: 'glow-blue' },
+      { alice: 'p15', bob: 'p16', target: 'q8', color: '#3b82f6', glowClass: 'glow-blue' },
+
+      // Quarterfinals -> Semifinals
+      { alice: 'q1', bob: 'q2', target: 'sf1', color: '#10b981', glowClass: 'glow-emerald' },
+      { alice: 'q3', bob: 'q4', target: 'sf2', color: '#10b981', glowClass: 'glow-emerald' },
+      { alice: 'q5', bob: 'q6', target: 'sf3', color: '#10b981', glowClass: 'glow-emerald' },
+      { alice: 'q7', bob: 'q8', target: 'sf4', color: '#10b981', glowClass: 'glow-emerald' },
+
+      // Semifinals -> Finals
+      { alice: 'sf1', bob: 'sf2', target: 'f1', color: '#a855f7', glowClass: 'glow-purple' },
+      { alice: 'sf3', bob: 'sf4', target: 'f2', color: '#a855f7', glowClass: 'glow-purple' },
+
+      // Finals -> Champion
+      { alice: 'f1', bob: 'f2', target: 'winner', color: '#f59e0b', glowClass: 'glow-amber' }
+    ];
+
     db.ref('bracket').on('value', (snapshot) => {
       currentData = snapshot.val() || {};
       renderBracket();
       renderRoster();
+      applyDynamicStyles();
+      requestAnimationFrame(drawBracketLines);
     });
 
     function renderBracket() {
       for (let key in currentData) {
         const el = document.getElementById(key);
         if (el) {
-          el.innerText = currentData[key] || '???';
+          const val = currentData[key] || '???';
+          if (key === 'winner') {
+            if (val && val !== 'CHAMPION' && val !== '???') {
+              el.innerHTML = `🏆 ${val}`;
+            } else {
+              el.innerHTML = '🏆 CHAMPION';
+            }
+          } else {
+            el.innerText = val;
+          }
         }
       }
     }
 
     function renderRoster() {
       const rosterGrid = document.getElementById('rosterGrid');
+      if (!rosterGrid) return;
       rosterGrid.innerHTML = '';
       
       let count = 0;
@@ -206,40 +330,172 @@
         count++;
 
         const card = document.createElement('div');
-        card.className = "bg-[#111827] border border-slate-700/60 rounded-xl p-2.5 flex items-center justify-between gap-2 shadow-sm";
+        card.className = "glass-card rounded-xl p-2.5 flex items-center justify-between gap-2 shadow-sm border border-slate-800/40";
         card.innerHTML = `
           <span class="text-blue-400 font-extrabold text-xs">#${i}</span>
           <input type="text" value="${name}" onchange="updateRosterName('${key}', this.value)" 
-            class="bg-transparent text-slate-100 font-bold text-xs uppercase focus:outline-none w-full truncate">
-          <button onclick="clearRosterSlot('${key}')" class="text-rose-500/70 hover:text-rose-400 text-xs font-bold border border-rose-500/30 hover:border-rose-500/80 rounded p-1">✕</button>
+            class="bg-transparent text-slate-100 font-bold text-xs uppercase focus:outline-none w-full truncate pl-1 border-b border-transparent focus:border-blue-500/50">
+          <button onclick="clearRosterSlot('${key}')" class="text-rose-500/70 hover:text-rose-400 text-xs font-bold border border-rose-500/20 hover:border-rose-500/50 rounded px-1.5 py-0.5 transition">✕</button>
         `;
         rosterGrid.appendChild(card);
       }
-      document.getElementById('rosterCount').innerText = count;
+      const countEl = document.getElementById('rosterCount');
+      if (countEl) countEl.innerText = count;
+    }
+
+    function applyDynamicStyles() {
+      // Reset all slots to default state
+      const allSlotIds = [
+        'p1','p2','p3','p4','p5','p6','p7','p8','p9','p10','p11','p12','p13','p14','p15','p16',
+        'q1','q2','q3','q4','q5','q6','q7','q8',
+        'sf1','sf2','sf3','sf4',
+        'f1','f2'
+      ];
+
+      allSlotIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.className = "b-slot bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-0 transition-all duration-300";
+        // Put margins back on secondary match card slots
+        if (['p2','p4','p6','p8','p10','p12','p14','p16','q2','q4','q6','q8','sf2','sf4','f2'].includes(id)) {
+          el.classList.add('mt-1.5');
+        }
+      });
+
+      const winnerEl = document.getElementById('winner');
+      if (winnerEl) {
+        winnerEl.className = "bg-slate-900/40 border border-slate-800/60 text-slate-400 px-3 py-2 rounded-lg text-sm font-bold text-center uppercase tracking-wider truncate transition-all duration-300";
+      }
+
+      // Apply winner/loser classes
+      MATCHES.forEach(match => {
+        const elAlice = document.getElementById(match.alice);
+        const elBob = document.getElementById(match.bob);
+
+        if (!elAlice || !elBob) return;
+
+        const nameAlice = currentData[match.alice] || '???';
+        const nameBob = currentData[match.bob] || '???';
+        const nameTarget = currentData[match.target] || '???';
+
+        let winner = null;
+        if (nameTarget && nameTarget !== '???' && nameTarget !== 'CHAMPION') {
+          if (nameTarget === nameAlice) winner = 'alice';
+          else if (nameTarget === nameBob) winner = 'bob';
+        }
+
+        function highlightWinner(el, color) {
+          if (color === '#3b82f6') el.classList.add('slot-winner-blue');
+          else if (color === '#10b981') el.classList.add('slot-winner-emerald');
+          else if (color === '#a855f7') el.classList.add('slot-winner-purple');
+          else if (color === '#f59e0b') el.classList.add('slot-winner-amber');
+        }
+
+        if (winner === 'alice') {
+          highlightWinner(elAlice, match.color);
+          elBob.classList.add('slot-loser');
+        } else if (winner === 'bob') {
+          highlightWinner(elBob, match.color);
+          elAlice.classList.add('slot-loser');
+        }
+      });
+
+      // Special highlight for the ultimate champion
+      const ultimateWinner = currentData['winner'];
+      if (ultimateWinner && ultimateWinner !== 'CHAMPION' && ultimateWinner !== '???') {
+        if (winnerEl) {
+          winnerEl.className = "slot-champion-winner px-3 py-2.5 rounded-lg text-sm uppercase tracking-wider text-center truncate transition-all duration-300";
+        }
+      }
     }
 
     function advancePlayer(currentId, targetId) {
-      const name = document.getElementById(currentId).innerText;
+      const name = currentData[currentId];
       if (!name || name === '???') return;
 
-      const currentEl = document.getElementById(currentId);
-      currentEl.classList.add('winner-active');
+      const oldTargetVal = currentData[targetId];
+      if (oldTargetVal === name) return; // already advanced
 
-      const updates = {};
-      updates[targetId] = name;
-      db.ref('bracket').update(updates);
+      const propagationUpdates = {};
+      propagationUpdates[targetId] = name;
+
+      function collectPropagation(slotId, oldVal, newVal) {
+        const match = MATCHES.find(m => m.alice === slotId || m.bob === slotId);
+        if (match) {
+          const tId = match.target;
+          const tVal = currentData[tId];
+          if (tVal === oldVal) {
+            propagationUpdates[tId] = newVal;
+            collectPropagation(tId, oldVal, newVal);
+          }
+        }
+      }
+
+      collectPropagation(targetId, oldTargetVal, name);
+      db.ref('bracket').update(propagationUpdates);
     }
 
     function updateRosterName(key, newName) {
-      const updates = {};
-      updates[key] = newName.toUpperCase() || `PLAYER`;
-      db.ref('bracket').update(updates);
+      const formattedNewName = newName.toUpperCase().trim() || `PLAYER`;
+      const oldVal = currentData[key];
+      if (oldVal === formattedNewName) return;
+
+      const propagationUpdates = {};
+      propagationUpdates[key] = formattedNewName;
+
+      function collectPropagation(slotId, oldVal, newVal) {
+        const match = MATCHES.find(m => m.alice === slotId || m.bob === slotId);
+        if (match) {
+          const tId = match.target;
+          const tVal = currentData[tId];
+          if (tVal === oldVal) {
+            propagationUpdates[tId] = newVal;
+            collectPropagation(tId, oldVal, newVal);
+          }
+        }
+      }
+
+      collectPropagation(key, oldVal, formattedNewName);
+      db.ref('bracket').update(propagationUpdates);
     }
 
     function clearRosterSlot(key) {
-      const updates = {};
-      updates[key] = '???';
-      db.ref('bracket').update(updates);
+      const oldVal = currentData[key];
+      if (!oldVal || oldVal === '???') return;
+
+      const propagationUpdates = {};
+      propagationUpdates[key] = '???';
+
+      function collectPropagation(slotId, oldVal, newVal) {
+        const match = MATCHES.find(m => m.alice === slotId || m.bob === slotId);
+        if (match) {
+          const tId = match.target;
+          const tVal = currentData[tId];
+          if (tVal === oldVal) {
+            propagationUpdates[tId] = newVal;
+            collectPropagation(tId, oldVal, newVal);
+          }
+        }
+      }
+
+      collectPropagation(key, oldVal, '???');
+      db.ref('bracket').update(propagationUpdates);
+    }
+
+    function addParticipant() {
+      const name = prompt("Enter participant name:");
+      if (!name) return;
+      
+      // Find the first slot in p1 to p16 that is empty ('???') or has the default 'PLAYERi'
+      for (let i = 1; i <= 16; i++) {
+        const key = `p${i}`;
+        const val = currentData[key];
+        if (!val || val === '???' || val === `PLAYER${i}`) {
+          updateRosterName(key, name);
+          return;
+        }
+      }
+      alert("All 16 roster slots are full! Clear a participant first.");
     }
 
     function resetBracket() {
@@ -251,9 +507,91 @@
       for (let i = 1; i <= 2; i++) initial[`f${i}`] = '???';
       initial['winner'] = 'CHAMPION';
 
-      document.querySelectorAll('.b-slot').forEach(el => el.classList.remove('winner-active'));
       db.ref('bracket').set(initial);
     }
+
+    function drawBracketLines() {
+      const svg = document.getElementById('bracket-svg');
+      if (!svg) return;
+
+      // Clear existing paths (keep defs)
+      const defs = svg.querySelector('defs');
+      svg.innerHTML = '';
+      if (defs) svg.appendChild(defs);
+
+      const board = document.getElementById('bracket-board');
+      if (!board) return;
+      const boardRect = board.getBoundingClientRect();
+
+      MATCHES.forEach(match => {
+        const elAlice = document.getElementById(match.alice);
+        const elBob = document.getElementById(match.bob);
+        const elTarget = document.getElementById(match.target);
+
+        if (!elAlice || !elBob || !elTarget) return;
+
+        const rectAlice = elAlice.getBoundingClientRect();
+        const rectBob = elBob.getBoundingClientRect();
+        const rectTarget = elTarget.getBoundingClientRect();
+
+        // Calculate relative coordinates
+        const xAlice = rectAlice.right - boardRect.left;
+        const yAlice = rectAlice.top + rectAlice.height / 2 - boardRect.top;
+
+        const xBob = rectBob.right - boardRect.left;
+        const yBob = rectBob.top + rectBob.height / 2 - boardRect.top;
+
+        const xTarget = rectTarget.left - boardRect.left;
+        const yTarget = rectTarget.top + rectTarget.height / 2 - boardRect.top;
+
+        const xMid = xAlice + (xTarget - xAlice) / 2;
+
+        const nameAlice = currentData[match.alice] || '???';
+        const nameBob = currentData[match.bob] || '???';
+        const nameTarget = currentData[match.target] || '???';
+
+        let winner = null;
+        if (nameTarget && nameTarget !== '???' && nameTarget !== 'CHAMPION') {
+          if (nameTarget === nameAlice) winner = 'alice';
+          else if (nameTarget === nameBob) winner = 'bob';
+        }
+
+        createPath(svg, xAlice, yAlice, xMid, yTarget, xTarget, winner === 'alice' ? 'won' : (winner === 'bob' ? 'lost' : 'pending'), match);
+        createPath(svg, xBob, yBob, xMid, yTarget, xTarget, winner === 'bob' ? 'won' : (winner === 'alice' ? 'lost' : 'pending'), match);
+      });
+    }
+
+    function createPath(svg, xStart, yStart, xMid, yTarget, xTarget, status, match) {
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      const d = `M ${xStart} ${yStart} H ${xMid} V ${yTarget} H ${xTarget}`;
+      path.setAttribute('d', d);
+      path.setAttribute('fill', 'none');
+
+      if (status === 'won') {
+        path.setAttribute('stroke', match.color);
+        path.setAttribute('stroke-width', '3');
+        path.setAttribute('filter', `url(#${match.glowClass})`);
+        path.setAttribute('stroke-linecap', 'round');
+        path.setAttribute('stroke-linejoin', 'round');
+      } else if (status === 'lost') {
+        path.setAttribute('stroke', '#1e293b');
+        path.setAttribute('stroke-width', '1.5');
+        path.setAttribute('opacity', '0.15');
+        path.setAttribute('stroke-linecap', 'round');
+        path.setAttribute('stroke-linejoin', 'round');
+      } else {
+        path.setAttribute('stroke', '#334155');
+        path.setAttribute('stroke-width', '2');
+        path.setAttribute('opacity', '0.45');
+        path.setAttribute('stroke-linecap', 'round');
+        path.setAttribute('stroke-linejoin', 'round');
+      }
+
+      svg.appendChild(path);
+    }
+
+    window.addEventListener('resize', () => requestAnimationFrame(drawBracketLines));
+    window.addEventListener('load', () => setTimeout(() => requestAnimationFrame(drawBracketLines), 150));
   </script>
 </body>
 </html>
