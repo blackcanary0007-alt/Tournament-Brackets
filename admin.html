@@ -260,6 +260,33 @@
     </div>
   </div>
 
+  <!-- Login Overlay -->
+  <div id="login-overlay" class="fixed inset-0 bg-[#04060f]/90 backdrop-blur-md flex items-center justify-center z-50 transition-opacity duration-300">
+    <div class="glass-card max-w-sm w-full p-8 rounded-2xl border border-slate-800 shadow-2xl flex flex-col items-center">
+      <div class="w-12 h-12 bg-blue-500/10 rounded-full flex items-center justify-center text-blue-400 text-xl font-black mb-4">
+        🔒
+      </div>
+      <h2 class="text-lg font-black text-slate-100 uppercase tracking-wider mb-2">Admin Authentication</h2>
+      <p class="text-xs text-slate-500 text-center mb-6">Enter your Firebase Admin credentials to access the console.</p>
+      
+      <div class="w-full flex flex-col gap-4">
+        <div>
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Email Address</label>
+          <input type="email" id="login-email" placeholder="admin@example.com" class="w-full bg-slate-900/50 border border-slate-800/80 rounded-xl px-4 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-blue-500/50 transition">
+        </div>
+        <div>
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Password</label>
+          <input type="password" id="login-password" placeholder="••••••••" class="w-full bg-slate-900/50 border border-slate-800/80 rounded-xl px-4 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-blue-500/50 transition">
+        </div>
+        
+        <button id="login-button" onclick="performLogin()" class="w-full bg-blue-600 hover:bg-blue-500 text-slate-100 font-extrabold text-xs uppercase tracking-widest py-3 rounded-xl transition duration-300 shadow-lg shadow-blue-600/20 mt-2">
+          Sign In
+        </button>
+      </div>
+      <div id="login-error" class="text-rose-500 text-xs font-bold mt-4 text-center hidden"></div>
+    </div>
+  </div>
+
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
@@ -268,16 +295,50 @@
   <script>
     let currentData = {};
 
-    // Authenticate anonymously to satisfy write permissions (auth != null)
+    // Listen for authentication state to toggle overlay
     if (typeof firebase.auth === 'function') {
-      firebase.auth().signInAnonymously()
-        .then(() => {
-          console.log("Authenticated anonymously successfully.");
-        })
-        .catch((error) => {
-          console.error("Anonymous authentication failed: ", error);
-          alert("Anonymous Auth Failed!\n\nTo allow edits under 'auth != null' rules, please go to your Firebase Console under 'Authentication' -> 'Sign-in method' and enable 'Anonymous'.\n\nError details: " + error.message);
-        });
+      firebase.auth().onAuthStateChanged((user) => {
+        const overlay = document.getElementById('login-overlay');
+        if (user) {
+          if (overlay) overlay.classList.add('hidden');
+          console.log("Admin authenticated successfully:", user.email);
+        } else {
+          if (overlay) overlay.classList.remove('hidden');
+        }
+      });
+    }
+
+    function performLogin() {
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      const errorEl = document.getElementById('login-error');
+      const btn = document.getElementById('login-button');
+      
+      if (!email || !password) {
+        errorEl.innerText = "Please fill in all fields.";
+        errorEl.classList.remove('hidden');
+        return;
+      }
+      
+      btn.innerText = "Signing In...";
+      btn.disabled = true;
+      errorEl.classList.add('hidden');
+      
+      if (typeof firebase.auth === 'function') {
+        firebase.auth().signInWithEmailAndPassword(email, password)
+          .catch(error => {
+            console.error("Login failed: ", error);
+            errorEl.innerText = error.message;
+            errorEl.classList.remove('hidden');
+            btn.innerText = "Sign In";
+            btn.disabled = false;
+          });
+      } else {
+        errorEl.innerText = "Firebase Authentication is not loaded.";
+        errorEl.classList.remove('hidden');
+        btn.innerText = "Sign In";
+        btn.disabled = false;
+      }
     }
 
     const MATCHES = [
