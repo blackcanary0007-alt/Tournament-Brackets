@@ -89,6 +89,29 @@
     ::-webkit-scrollbar-thumb:hover {
       background: rgba(148, 163, 184, 0.3);
     }
+    
+    /* Player slots sizing & spacing overrides */
+    .glass-card div[id^="p"],
+    .glass-card div[id^="q"],
+    .glass-card div[id^="sf"],
+    .glass-card div[id^="f"] {
+      font-size: 0.875rem !important; /* text-sm */
+      padding-top: 0.5rem !important; /* py-2 */
+      padding-bottom: 0.5rem !important; /* py-2 */
+      font-weight: 700 !important; /* font-bold */
+    }
+    .glass-card div[id^="p"]:nth-child(2),
+    .glass-card div[id^="q"]:nth-child(2),
+    .glass-card div[id^="sf"]:nth-child(2),
+    .glass-card div[id^="f"]:nth-child(2) {
+      margin-top: 0.625rem !important; /* mt-2.5 */
+    }
+    #winner {
+      font-size: 1rem !important; /* text-base */
+      padding-top: 0.625rem !important; /* py-2.5 */
+      padding-bottom: 0.625rem !important; /* py-2.5 */
+      font-weight: 900 !important; /* font-black */
+    }
   </style>
   <script>
     function handleIconError(img) {
@@ -295,7 +318,7 @@
     <!-- QUARTERFINALS -->
     <div class="flex flex-col w-48">
       <div class="text-[10px] font-black tracking-widest text-emerald-400 uppercase text-center mb-6">QUARTERFINALS</div>
-      <div class="flex flex-col gap-[92px] pt-[32px]">
+      <div class="flex flex-col gap-[132px] pt-[25px]">
         <div class="glass-card rounded-xl p-2 relative z-10">
           <div id="q1" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">???</div>
           <div id="q2" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">???</div>
@@ -318,7 +341,7 @@
     <!-- SEMIFINALS -->
     <div class="flex flex-col w-48">
       <div class="text-[10px] font-black tracking-widest text-purple-400 uppercase text-center mb-6">SEMIFINALS</div>
-      <div class="flex flex-col gap-[248px] pt-[110px]">
+      <div class="flex flex-col gap-[368px] pt-[143px]">
         <div class="glass-card rounded-xl p-2 relative z-10">
           <div id="sf1" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">???</div>
           <div id="sf2" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">???</div>
@@ -333,7 +356,7 @@
     <!-- FINALS -->
     <div class="flex flex-col w-48">
       <div class="text-[10px] font-black tracking-widest text-amber-500 uppercase text-center mb-6">FINALS</div>
-      <div class="flex flex-col pt-[266px]">
+      <div class="flex flex-col pt-[379px]">
         <div class="glass-card rounded-xl p-2 relative z-10">
           <div id="f1" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">???</div>
           <div id="f2" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">???</div>
@@ -344,7 +367,7 @@
     <!-- CHAMPION -->
     <div class="flex flex-col w-52">
       <div class="text-[10px] font-black tracking-widest text-amber-500 uppercase text-center mb-6">CHAMPION</div>
-      <div class="flex flex-col items-center pt-[130px]">
+      <div class="flex flex-col items-center pt-[330px]">
         <div class="relative flex items-center justify-center mb-4">
           <div class="absolute w-16 h-16 bg-amber-500/20 rounded-full blur-md animate-pulse"></div>
           <div class="relative w-14 h-14 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(245,158,11,0.4)] animate-float">
