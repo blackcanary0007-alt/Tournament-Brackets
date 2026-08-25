@@ -43,16 +43,16 @@
     <button onclick="logout()" style="background:#f44336;">Logout</button>
   </div>
 
-  <!-- Firebase Web SDKs -->
+  <!-- Firebase Web SDKs (v9 Compat Mode) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
-  <!-- Central Config File -->
+  <!-- Shared Firebase Config & Initialization -->
   <script src="firebase.js"></script>
 
   <script>
-    // Monitor auth state changes
+    // Monitor auth state changes using the auth instance initialized in firebase.js
     auth.onAuthStateChanged((user) => {
       if (user) {
         document.getElementById('login-section').classList.add('hidden');
