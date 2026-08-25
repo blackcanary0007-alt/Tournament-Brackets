@@ -139,7 +139,12 @@
             </span>
           </h1>
         </div>
-        <div></div>
+        <!-- Countdown Timer -->
+        <div id="countdown-timer" class="text-[9px] font-black uppercase tracking-widest text-slate-500 flex items-center gap-1.5 bg-slate-950/40 border border-slate-800/40 px-2 py-0.5 rounded shadow-sm">
+          <span class="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse"></span>
+          <span>Starts In:</span>
+          <span id="countdown-text" class="text-cyan-400 font-mono">00d 00h 00m 00s</span>
+        </div>
       </div>
 
       <!-- Bracket Board -->
@@ -765,6 +770,31 @@
 
     window.addEventListener('resize', () => requestAnimationFrame(drawBracketLines));
     window.addEventListener('load', () => setTimeout(() => requestAnimationFrame(drawBracketLines), 150));
+
+    // Countdown Timer for Sunday August 30th 22:30 EET/EEST
+    const targetDate = new Date("August 30, 2026 22:30:00 GMT+0300").getTime();
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+      const timerEl = document.getElementById('countdown-timer');
+      const textEl = document.getElementById('countdown-text');
+      if (!textEl) return;
+      if (distance < 0) {
+        if (timerEl) timerEl.classList.add('hidden');
+        return;
+      }
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      const dStr = days > 0 ? `${days}d ` : '';
+      const hStr = String(hours).padStart(2, '0') + 'h ';
+      const mStr = String(minutes).padStart(2, '0') + 'm ';
+      const sStr = String(seconds).padStart(2, '0') + 's';
+      textEl.innerText = `${dStr}${hStr}${mStr}${sStr}`;
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
   </script>
 </body>
 </html>
