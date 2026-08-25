@@ -2,82 +2,104 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bracket Admin Panel</title>
   <style>
-    body { background: #111; color: #fff; font-family: sans-serif; padding: 20px; }
-    .form-group { margin-bottom: 10px; }
-    input { padding: 8px; margin-right: 10px; background: #222; color: #fff; border: 1px solid #444; }
-    button { padding: 8px 16px; background: #00d2ff; border: none; font-weight: bold; cursor: pointer; }
-    #admin-panel { display: none; margin-top: 20px; }
+    body { font-family: Arial, sans-serif; background: #181818; color: #fff; padding: 20px; text-align: center; }
+    .card { background: #242424; padding: 20px; border-radius: 8px; display: inline-block; text-align: left; margin-top: 20px; }
+    input { display: block; width: 250px; padding: 8px; margin: 8px 0; background: #333; color: #fff; border: 1px solid #555; border-radius: 4px; }
+    button { padding: 8px 16px; background: #008CBA; color: white; border: none; cursor: pointer; border-radius: 4px; margin-top: 5px; }
+    button:hover { background: #005f73; }
+    .hidden { display: none; }
   </style>
 </head>
 <body>
 
-  <div id="login-panel">
-    <h2>Admin Login</h2>
+  <h1>Admin Control Panel</h1>
+
+  <!-- Login Section -->
+  <div id="login-section" class="card">
+    <h2>Login</h2>
     <input type="email" id="email" placeholder="Admin Email">
     <input type="password" id="password" placeholder="Password">
-    <button id="login-btn">Login</button>
+    <button onclick="login()">Sign In</button>
+    <p id="error-msg" style="color: red;"></p>
   </div>
 
-  <div id="admin-panel">
+  <!-- Bracket Edit Section -->
+  <div id="admin-section" class="card hidden">
     <h2>Edit Bracket Slots</h2>
-    <div id="slots-editor"></div>
-    <button id="save-btn" style="margin-top: 15px;">Save Changes</button>
+    <label>Player 1:</label><input type="text" id="input-p1">
+    <label>Player 2:</label><input type="text" id="input-p2">
+    <label>Player 3:</label><input type="text" id="input-p3">
+    <label>Player 4:</label><input type="text" id="input-p4">
+    <hr>
+    <label>Finalist 1:</label><input type="text" id="input-f1">
+    <label>Finalist 2:</label><input type="text" id="input-f2">
+    <hr>
+    <label>Champion:</label><input type="text" id="input-winner">
+    <br>
+    <button onclick="updateBracket()">Save & Publish Bracket</button>
+    <button onclick="logout()" style="background:#f44336;">Logout</button>
   </div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+  <!-- Firebase Web SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
-    const firebaseConfig = {
-      apiKey: "YOUR_FIREBASE_API_KEY",
-      databaseURL: "YOUR_FIREBASE_DATABASE_URL",
-      projectId: "YOUR_PROJECT_ID"
-    };
+  <!-- Central Config File -->
+  <script src="firebase.js"></script>
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getDatabase(app);
+  <script>
+    // Monitor auth state changes
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        document.getElementById('login-section').classList.add('hidden');
+        document.getElementById('admin-section').classList.remove('hidden');
+        loadCurrentData();
+      } else {
+        document.getElementById('login-section').classList.remove('hidden');
+        document.getElementById('admin-section').classList.add('hidden');
+      }
+    });
 
-    document.getElementById('login-btn').addEventListener('click', () => {
+    function login() {
       const email = document.getElementById('email').value;
       const pass = document.getElementById('password').value;
-      signInWithEmailAndPassword(auth, email, pass).catch(err => alert("Auth failed: " + err.message));
-    });
-
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        document.getElementById('login-panel').style.display = 'none';
-        document.getElementById('admin-panel').style.display = 'block';
-        loadEditor();
-      }
-    });
-
-    async function loadEditor() {
-      const snapshot = await get(ref(db, 'bracket/'));
-      const data = snapshot.val() || {};
-      const container = document.getElementById('slots-editor');
-      container.innerHTML = '';
-
-      for(let i = 1; i <= 16; i++) {
-        const div = document.createElement('div');
-        div.className = 'form-group';
-        div.innerHTML = `<label>Slot ${i}: </label><input type="text" id="slot_${i}" value="${data[`p${i}`] || ''}">`;
-        container.appendChild(div);
-      }
+      auth.signInWithEmailAndPassword(email, pass).catch(err => {
+        document.getElementById('error-msg').innerText = err.message;
+      });
     }
 
-    document.getElementById('save-btn').addEventListener('click', () => {
-      const updates = {};
-      for(let i = 1; i <= 16; i++) {
-        updates[`p${i}`] = document.getElementById(`slot_${i}`).value;
-      }
-      set(ref(db, 'bracket/'), updates)
-        .then(() => alert("Updated successfully!"))
-        .catch(err => alert("Error: " + err.message));
-    });
+    function logout() {
+      auth.signOut();
+    }
+
+    function loadCurrentData() {
+      db.ref('bracket').once('value', (snapshot) => {
+        const data = snapshot.val() || {};
+        ['p1', 'p2', 'p3', 'p4', 'f1', 'f2', 'winner'].forEach(key => {
+          document.getElementById('input-' + key).value = data[key] || '';
+        });
+      });
+    }
+
+    function updateBracket() {
+      const payload = {
+        p1: document.getElementById('input-p1').value,
+        p2: document.getElementById('input-p2').value,
+        p3: document.getElementById('input-p3').value,
+        p4: document.getElementById('input-p4').value,
+        f1: document.getElementById('input-f1').value,
+        f2: document.getElementById('input-f2').value,
+        winner: document.getElementById('input-winner').value
+      };
+      
+      db.ref('bracket').set(payload)
+        .then(() => alert('Bracket updated live!'))
+        .catch(err => alert('Error saving: ' + err.message));
+    }
   </script>
 </body>
 </html>
