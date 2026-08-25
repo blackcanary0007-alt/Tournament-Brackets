@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login - Tournament Bracket</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    h1, h2, h3, .font-display {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    .glass-card {
+      background: rgba(15, 23, 42, 0.45);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+  </style>
+</head>
+<body class="bg-[#04060f] text-slate-100 min-h-screen flex flex-col justify-center items-center p-6 relative">
+  <!-- Glowing Background Accents -->
+  <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+  <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none"></div>
+
+  <div class="w-full max-w-[400px] glass-card rounded-2xl p-8 border border-slate-800/80 shadow-2xl relative z-10">
+    <div class="flex flex-col items-center mb-8">
+      <div class="w-14 h-14 bg-blue-500/10 rounded-full flex items-center justify-center text-blue-400 text-2xl font-black mb-4 shadow-[0_0_20px_rgba(59,130,246,0.15)]">
+        🔒
+      </div>
+      <h1 class="text-2xl font-black text-slate-100 uppercase tracking-wider text-center">
+        LUMENA <span class="text-blue-400">ADMIN</span>
+      </h1>
+      <p class="text-xs text-slate-500 mt-1 text-center">Sign in to manage the tournament bracket & roster</p>
+    </div>
+
+    <div class="flex flex-col gap-4">
+      <div>
+        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1.5">Email Address</label>
+        <input type="email" id="login-email" placeholder="admin@example.com" class="w-full bg-[#080e22]/60 border border-slate-800 focus:border-blue-500/50 rounded-xl px-4 py-3 text-sm text-slate-100 focus:outline-none transition duration-300">
+      </div>
+      <div>
+        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1.5">Password</label>
+        <input type="password" id="login-password" placeholder="••••••••" class="w-full bg-[#080e22]/60 border border-slate-800 focus:border-blue-500/50 rounded-xl px-4 py-3 text-sm text-slate-100 focus:outline-none transition duration-300">
+      </div>
+      
+      <button id="login-button" onclick="performLogin()" class="w-full bg-blue-600 hover:bg-blue-500 text-slate-100 font-extrabold text-xs uppercase tracking-widest py-3.5 rounded-xl transition duration-300 shadow-lg shadow-blue-600/20 mt-3 flex justify-center items-center">
+        Sign In
+      </button>
+    </div>
+    
+    <div id="login-error" class="text-rose-500 text-xs font-bold mt-4 text-center hidden p-3 rounded-lg bg-rose-500/10 border border-rose-500/20"></div>
+
+    <div class="mt-8 text-center">
+      <a href="index.html" class="text-xs text-slate-500 hover:text-slate-400 transition flex items-center justify-center gap-1">
+        ← Back to public bracket
+      </a>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="firebase.js"></script>
+
+  <script>
+    // Redirect to admin if already logged in
+    if (typeof firebase.auth === 'function') {
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          window.location.href = 'admin.html';
+        }
+      });
+    }
+
+    function performLogin() {
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      const errorEl = document.getElementById('login-error');
+      const btn = document.getElementById('login-button');
+      
+      if (!email || !password) {
+        errorEl.innerText = "Please enter both email and password.";
+        errorEl.classList.remove('hidden');
+        return;
+      }
+      
+      btn.innerText = "SIGNING IN...";
+      btn.disabled = true;
+      errorEl.classList.add('hidden');
+      
+      if (typeof firebase.auth === 'function') {
+        firebase.auth().signInWithEmailAndPassword(email, password)
+          .then(() => {
+            window.location.href = 'admin.html';
+          })
+          .catch(error => {
+            console.error("Login failed: ", error);
+            errorEl.innerText = error.message;
+            errorEl.classList.remove('hidden');
+            btn.innerText = "SIGN IN";
+            btn.disabled = false;
+          });
+      } else {
+        errorEl.innerText = "Firebase Authentication is not loaded.";
+        errorEl.classList.remove('hidden');
+        btn.innerText = "SIGN IN";
+        btn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>
