@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,22 +9,37 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+    rel="stylesheet">
   <style>
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
-    h1, h2, .font-black {
+
+    h1,
+    h2,
+    .font-black {
       font-family: 'Space Grotesk', sans-serif;
     }
+
     /* Floating Animation */
     @keyframes float {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-6px) rotate(1deg); }
+
+      0%,
+      100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(-6px) rotate(1deg);
+      }
     }
+
     .animate-float {
       animation: float 4s ease-in-out infinite;
     }
+
     /* Glassmorphism Styles */
     .glass-card {
       background: rgba(13, 20, 38, 0.45);
@@ -33,12 +49,14 @@
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
     .glass-card:hover {
       border-color: rgba(255, 255, 255, 0.08);
       background: rgba(13, 20, 38, 0.6);
       transform: translateY(-2px);
       box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
     }
+
     /* Winner/Loser classes */
     .slot-winner-blue {
       background-color: rgba(59, 130, 246, 0.12) !important;
@@ -47,6 +65,7 @@
       box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
       font-weight: 800 !important;
     }
+
     .slot-winner-emerald {
       background-color: rgba(16, 185, 129, 0.12) !important;
       color: #34d399 !important;
@@ -54,6 +73,7 @@
       box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
       font-weight: 800 !important;
     }
+
     .slot-winner-purple {
       background-color: rgba(168, 85, 247, 0.12) !important;
       color: #c084fc !important;
@@ -61,6 +81,7 @@
       box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
       font-weight: 800 !important;
     }
+
     .slot-winner-amber {
       background-color: rgba(245, 158, 11, 0.15) !important;
       color: #fbbf24 !important;
@@ -68,50 +89,66 @@
       box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
       font-weight: 800 !important;
     }
+
     .slot-loser {
       opacity: 0.35;
       border-color: transparent !important;
       background-color: rgba(15, 23, 42, 0.2) !important;
       color: #475569 !important;
     }
+
     /* Custom Scrollbar */
     ::-webkit-scrollbar {
       width: 8px;
       height: 8px;
     }
+
     ::-webkit-scrollbar-track {
       background: rgba(15, 23, 42, 0.3);
       border-radius: 999px;
     }
+
     ::-webkit-scrollbar-thumb {
       background: rgba(148, 163, 184, 0.15);
       border-radius: 999px;
     }
+
     ::-webkit-scrollbar-thumb:hover {
       background: rgba(148, 163, 184, 0.3);
     }
-    
+
     /* Player slots sizing & spacing overrides */
     .glass-card div[id^="p"],
     .glass-card div[id^="q"],
     .glass-card div[id^="sf"],
     .glass-card div[id^="f"] {
-      font-size: 0.875rem !important; /* text-sm */
-      padding-top: 0.5rem !important; /* py-2 */
-      padding-bottom: 0.5rem !important; /* py-2 */
-      font-weight: 700 !important; /* font-bold */
+      font-size: 0.875rem !important;
+      /* text-sm */
+      padding-top: 0.5rem !important;
+      /* py-2 */
+      padding-bottom: 0.5rem !important;
+      /* py-2 */
+      font-weight: 700 !important;
+      /* font-bold */
     }
+
     .glass-card div[id^="p"]:nth-child(2),
     .glass-card div[id^="q"]:nth-child(2),
     .glass-card div[id^="sf"]:nth-child(2),
     .glass-card div[id^="f"]:nth-child(2) {
-      margin-top: 0.625rem !important; /* mt-2.5 */
+      margin-top: 0.625rem !important;
+      /* mt-2.5 */
     }
+
     #winner {
-      font-size: 1rem !important; /* text-base */
-      padding-top: 0.625rem !important; /* py-2.5 */
-      padding-bottom: 0.625rem !important; /* py-2.5 */
-      font-weight: 900 !important; /* font-black */
+      font-size: 1rem !important;
+      /* text-base */
+      padding-top: 0.625rem !important;
+      /* py-2.5 */
+      padding-bottom: 0.625rem !important;
+      /* py-2.5 */
+      font-weight: 900 !important;
+      /* font-black */
     }
   </style>
   <script>
@@ -122,314 +159,407 @@
     }
   </script>
 </head>
+
 <body class="bg-[#04060f] text-slate-100 min-h-screen p-6 font-sans flex flex-col justify-center items-center">
 
   <div class="flex items-center gap-6 max-w-full">
     <!-- Left Flanking Image -->
     <div class="hidden xl:flex flex-col items-center justify-center w-48 shrink-0 group cursor-pointer">
       <div class="w-full transition-all duration-300 ease-out group-hover:-translate-y-3">
-        <img src="Assets/BlackCanary007.jpeg" alt="BlackCanary007" class="w-full rounded-2xl border border-slate-800/80 shadow-[0_0_25px_rgba(88,101,242,0.15)] group-hover:shadow-[0_0_35px_rgba(88,101,242,0.3)] object-cover aspect-square transition-all duration-300">
+        <img src="Assets/BlackCanary007.jpeg" alt="BlackCanary007"
+          class="w-full rounded-2xl border border-slate-800/80 shadow-[0_0_25px_rgba(88,101,242,0.15)] group-hover:shadow-[0_0_35px_rgba(88,101,242,0.3)] object-cover aspect-square transition-all duration-300">
       </div>
-      <span class="text-[10px] font-black uppercase tracking-widest text-slate-500 group-hover:text-rose-500 transition-colors duration-300 mt-3 block">
+      <span
+        class="text-[10px] font-black uppercase tracking-widest text-slate-500 group-hover:text-rose-500 transition-colors duration-300 mt-3 block">
         BlackCanary007
       </span>
     </div>
 
     <!-- Main Card Container -->
-    <div class="w-full max-w-[1450px] bg-[#070b18]/95 border border-slate-800/80 rounded-2xl p-8 shadow-2xl overflow-x-auto snap-x snap-mandatory scroll-smooth">
-    
-    <!-- Top Header -->
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 pb-4 border-b border-slate-800/50 gap-4">
-      <div>
-        <h1 class="font-black uppercase leading-none">
-          <span class="text-lg md:text-xl tracking-wider text-slate-100 block">
-            LUMENA <span class="text-emerald-400">TOURNAMENT</span>
-          </span>
-          <span class="text-[9px] md:text-[10px] tracking-widest text-slate-400 block mt-1.5 font-semibold">
-            GREEKFREAK | BLACKCANARY007
-          </span>
-        </h1>
-      </div>
-      <div class="flex flex-col items-end w-[240px]">
-        <div class="flex items-center justify-between w-full mb-2.5">
-          <a href="https://discord.gg/9WwHEAZQ7" target="_blank" rel="noopener noreferrer" 
-            class="h-[32px] w-[50px] bg-[#5865F2]/10 hover:bg-[#5865F2]/20 border border-[#5865F2]/30 text-[#5865F2] rounded-lg text-xs flex items-center justify-center shadow-[0_0_15px_rgba(88,101,242,0.1)] transition duration-300">
-            <svg class="w-4 h-4 fill-current" viewBox="0 0 127.14 96.36">
-              <path d="M107.7,8.07A105.15,105.15,0,0,0,77.26,0a77.19,77.19,0,0,0-3.3,6.83A96.67,96.67,0,0,0,53.22,6.83,77.19,77.19,0,0,0,49.88,0,105.15,105.15,0,0,0,19.44,8.07C3.66,31.58-1.86,54.65,1,77.53A105.73,105.73,0,0,0,32,96.36a77.7,77.7,0,0,0,6.63-10.85,68.43,68.43,0,0,1-10.5-5A52.92,52.92,0,0,0,29,79.81a75.6,75.6,0,0,0,69.17,0,52.92,52.92,0,0,0,1.25,1.24,68.43,68.43,0,0,1-10.5,5,77.7,77.7,0,0,0,6.63,10.85,105.73,105.73,0,0,0,31-18.83C129.54,49.19,122.9,26.47,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53S36.18,40.36,42.45,40.36,53.9,46,53.77,53,48.72,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.24,60,73.24,53S78.41,40.36,84.69,40.36,96.14,46,96,53,91,65.69,84.69,65.69Z"/>
-            </svg>
-          </a>
-          <a href="https://www.twitch.tv/greekfreak6967" target="_blank" rel="noopener noreferrer" 
-            class="h-[32px] w-[178px] bg-[#9146FF]/10 hover:bg-[#9146FF]/20 border border-[#9146FF]/30 text-[#9146FF] rounded-lg text-[9px] font-black tracking-widest uppercase flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(145,70,255,0.1)] transition duration-300">
-            <span class="relative flex h-2 w-2">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#9146FF] opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-2 w-2 bg-[#9146FF]"></span>
+    <div
+      class="w-full max-w-[1450px] bg-[#070b18]/95 border border-slate-800/80 rounded-2xl p-8 shadow-2xl overflow-x-auto snap-x snap-mandatory scroll-smooth">
+
+      <!-- Top Header -->
+      <div
+        class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 pb-4 border-b border-slate-800/50 gap-4">
+        <div>
+          <h1 class="font-black uppercase leading-none">
+            <span class="text-lg md:text-xl tracking-wider text-slate-100 block">
+              LUMENA <span class="text-emerald-400">TOURNAMENT</span>
             </span>
-            <span>LIVE ON TWITCH</span>
-          </a>
+            <span class="text-[9px] md:text-[10px] tracking-widest text-slate-400 block mt-1.5 font-semibold">
+              GREEKFREAK | BLACKCANARY007
+            </span>
+          </h1>
         </div>
-        <!-- Countdown Timer -->
-        <div id="countdown-timer" class="w-full text-[9px] font-black uppercase tracking-widest text-slate-500 flex items-center justify-center gap-2.5 bg-slate-950/40 border border-slate-800/40 px-3 py-1.5 rounded shadow-sm">
-          <span class="w-1.5 h-1.5 bg-rose-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(244,63,94,0.6)]"></span>
-          <span class="text-rose-500">Starts In:</span>
-          <span id="countdown-text" class="text-cyan-400 font-mono">00d 00h 00m 00s</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Tournament Rewards Section -->
-    <div class="mb-10 pb-8 border-b border-slate-800/40">
-      <div class="flex justify-between items-center mb-6">
-        <h2 class="text-xs font-black tracking-widest text-amber-500 uppercase flex items-center gap-2">
-          🏆 Rewards / Έπαθλα
-        </h2>
-        <div></div>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <!-- 1st Place -->
-        <div class="glass-card rounded-xl p-4 flex items-center gap-3 border border-amber-500/20 shadow-[0_0_15px_rgba(245,158,11,0.05)] group cursor-pointer">
-          <div class="w-14 h-14 rounded-full bg-amber-500/10 flex items-center justify-center shadow-[0_0_12px_rgba(245,158,11,0.2)] group-hover:shadow-[0_0_20px_rgba(245,158,11,0.45)] p-0.5 shrink-0 transition-all duration-300 group-hover:-translate-y-1.5 group-hover:scale-150">
-            <img src="Assets/1stReward-removebg-preview.png" alt="🥇" class="w-full h-full object-contain" onerror="handleIconError(this)">
-            <span class="hidden text-xl">🥇</span>
-          </div>
-          <div>
-            <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">1st Place / 1η Θέση</div>
-            <div class="text-base font-black text-amber-400 flex items-center gap-1.5">
-              70€ 
-              <img src="cash.png" alt="cash" class="w-4 h-4 object-contain" onerror="handleIconError(this)">
-              <span class="hidden text-xs font-medium text-slate-400">cash</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 2nd Place -->
-        <div class="glass-card rounded-xl p-4 flex items-center gap-3 border border-slate-400/10 group cursor-pointer">
-          <div class="w-14 h-14 rounded-full bg-slate-400/10 flex items-center justify-center shadow-[0_0_12px_rgba(148,163,184,0.2)] group-hover:shadow-[0_0_20px_rgba(148,163,184,0.45)] p-0.5 shrink-0 transition-all duration-300 group-hover:-translate-y-1.5 group-hover:scale-150">
-            <img src="Assets/2stReward-removebg-preview.png" alt="🥈" class="w-full h-full object-contain" onerror="handleIconError(this)">
-            <span class="hidden text-xl">🥈</span>
-          </div>
-          <div>
-            <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">2nd Place / 2η Θέση</div>
-            <div class="text-base font-black text-slate-300 flex items-center gap-1.5">
-              30€ 
-              <img src="cash.png" alt="cash" class="w-4 h-4 object-contain" onerror="handleIconError(this)">
-              <span class="hidden text-xs font-medium text-slate-400">cash</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 3rd Place -->
-        <div class="glass-card rounded-xl p-4 flex items-center gap-3 border border-amber-700/10 group cursor-pointer">
-          <div class="w-14 h-14 rounded-full bg-amber-700/10 flex items-center justify-center shadow-[0_0_12px_rgba(180,83,9,0.2)] group-hover:shadow-[0_0_20px_rgba(180,83,9,0.45)] p-0.5 shrink-0 transition-all duration-300 group-hover:-translate-y-1.5 group-hover:scale-150">
-            <img src="Assets/3thReward-removebg-preview.png" alt="🥉" class="w-full h-full object-contain" onerror="handleIconError(this)">
-            <span class="hidden text-xl">🥉</span>
-          </div>
-          <div>
-            <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">3rd Place / 3η Θέση</div>
-            <div class="text-base font-black text-amber-600 flex items-center gap-1.5">
-              500 
-              <img src="prism.png" alt="Prisms" class="w-4 h-4 object-contain" onerror="handleIconError(this)">
-              <span class="hidden text-xs font-medium text-slate-400">Prisms</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 4th Place -->
-        <div class="glass-card rounded-xl p-4 flex items-center gap-3 border border-teal-500/10 group cursor-pointer">
-          <div class="w-14 h-14 rounded-full bg-teal-500/10 flex items-center justify-center shadow-[0_0_12px_rgba(20,184,166,0.2)] group-hover:shadow-[0_0_20px_rgba(20,184,166,0.45)] p-0.5 shrink-0 transition-all duration-300 group-hover:-translate-y-1.5 group-hover:scale-150">
-            <img src="Assets/4thReward-removebg-preview.png" alt="🏅" class="w-full h-full object-contain" onerror="handleIconError(this)">
-            <span class="hidden text-xl">🏅</span>
-          </div>
-          <div>
-            <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">4th Place / 4η Θέση</div>
-            <div class="text-xs font-black text-teal-400 leading-tight">
-              Δωρεάν Συμμετοχή 
-              <span class="text-[10px] font-semibold text-slate-400 block mt-0.5 flex items-center gap-0.5">
-                +100 
-                <img src="prism.png" alt="Prisms" class="w-3.5 h-3.5 object-contain" onerror="handleIconError(this)">
-                <span class="hidden text-[9px] text-slate-400">Prisms</span>
+        <div class="flex flex-col items-end w-[240px]">
+          <div class="flex items-center justify-between w-full mb-2.5">
+            <a href="https://discord.gg/9WwHEAZQ7" target="_blank" rel="noopener noreferrer"
+              class="h-[32px] w-[50px] bg-[#5865F2]/10 hover:bg-[#5865F2]/20 border border-[#5865F2]/30 text-[#5865F2] rounded-lg text-xs flex items-center justify-center shadow-[0_0_15px_rgba(88,101,242,0.1)] transition duration-300">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 127.14 96.36">
+                <path
+                  d="M107.7,8.07A105.15,105.15,0,0,0,77.26,0a77.19,77.19,0,0,0-3.3,6.83A96.67,96.67,0,0,0,53.22,6.83,77.19,77.19,0,0,0,49.88,0,105.15,105.15,0,0,0,19.44,8.07C3.66,31.58-1.86,54.65,1,77.53A105.73,105.73,0,0,0,32,96.36a77.7,77.7,0,0,0,6.63-10.85,68.43,68.43,0,0,1-10.5-5A52.92,52.92,0,0,0,29,79.81a75.6,75.6,0,0,0,69.17,0,52.92,52.92,0,0,0,1.25,1.24,68.43,68.43,0,0,1-10.5,5,77.7,77.7,0,0,0,6.63,10.85,105.73,105.73,0,0,0,31-18.83C129.54,49.19,122.9,26.47,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53S36.18,40.36,42.45,40.36,53.9,46,53.77,53,48.72,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.24,60,73.24,53S78.41,40.36,84.69,40.36,96.14,46,96,53,91,65.69,84.69,65.69Z" />
+              </svg>
+            </a>
+            <a href="https://www.twitch.tv/greekfre4k99" target="_blank" rel="noopener noreferrer"
+              class="h-[32px] w-[178px] bg-[#9146FF]/10 hover:bg-[#9146FF]/20 border border-[#9146FF]/30 text-[#9146FF] rounded-lg text-[9px] font-black tracking-widest uppercase flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(145,70,255,0.1)] transition duration-300">
+              <span class="relative flex h-2 w-2">
+                <span
+                  class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#9146FF] opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-[#9146FF]"></span>
               </span>
+              <span>LIVE ON TWITCH</span>
+            </a>
+          </div>
+          <!-- Countdown Timer -->
+          <div id="countdown-timer"
+            class="w-full text-[9px] font-black uppercase tracking-widest text-slate-500 flex items-center justify-center gap-2.5 bg-slate-950/40 border border-slate-800/40 px-3 py-1.5 rounded shadow-sm">
+            <span
+              class="w-1.5 h-1.5 bg-rose-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(244,63,94,0.6)]"></span>
+            <span class="text-rose-500">Starts In:</span>
+            <span id="countdown-text" class="text-cyan-400 font-mono">00d 00h 00m 00s</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tournament Rewards Section -->
+      <div class="mb-10 pb-8 border-b border-slate-800/40">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-xs font-black tracking-widest text-amber-500 uppercase flex items-center gap-2">
+            🏆 Rewards / Έπαθλα
+          </h2>
+          <div></div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- 1st Place -->
+          <div
+            class="glass-card rounded-xl p-4 flex items-center gap-3 border border-amber-500/20 shadow-[0_0_15px_rgba(245,158,11,0.05)] group cursor-pointer">
+            <div
+              class="w-14 h-14 rounded-full bg-amber-500/10 flex items-center justify-center shadow-[0_0_12px_rgba(245,158,11,0.2)] group-hover:shadow-[0_0_20px_rgba(245,158,11,0.45)] p-0.5 shrink-0 transition-all duration-300 group-hover:-translate-y-1.5 group-hover:scale-150">
+              <img src="Assets/1stReward-removebg-preview.png" alt="🥇" class="w-full h-full object-contain"
+                onerror="handleIconError(this)">
+              <span class="hidden text-xl">🥇</span>
+            </div>
+            <div>
+              <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">1st Place / 1η Θέση</div>
+              <div class="text-base font-black text-amber-400 flex items-center gap-1.5">
+                70€
+                <img src="cash.png" alt="cash" class="w-4 h-4 object-contain" onerror="handleIconError(this)">
+                <span class="hidden text-xs font-medium text-slate-400">cash</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2nd Place -->
+          <div
+            class="glass-card rounded-xl p-4 flex items-center gap-3 border border-slate-400/10 group cursor-pointer">
+            <div
+              class="w-14 h-14 rounded-full bg-slate-400/10 flex items-center justify-center shadow-[0_0_12px_rgba(148,163,184,0.2)] group-hover:shadow-[0_0_20px_rgba(148,163,184,0.45)] p-0.5 shrink-0 transition-all duration-300 group-hover:-translate-y-1.5 group-hover:scale-150">
+              <img src="Assets/2stReward-removebg-preview.png" alt="🥈" class="w-full h-full object-contain"
+                onerror="handleIconError(this)">
+              <span class="hidden text-xl">🥈</span>
+            </div>
+            <div>
+              <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">2nd Place / 2η Θέση</div>
+              <div class="text-base font-black text-slate-300 flex items-center gap-1.5">
+                30€
+                <img src="cash.png" alt="cash" class="w-4 h-4 object-contain" onerror="handleIconError(this)">
+                <span class="hidden text-xs font-medium text-slate-400">cash</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3rd Place -->
+          <div
+            class="glass-card rounded-xl p-4 flex items-center gap-3 border border-amber-700/10 group cursor-pointer">
+            <div
+              class="w-14 h-14 rounded-full bg-amber-700/10 flex items-center justify-center shadow-[0_0_12px_rgba(180,83,9,0.2)] group-hover:shadow-[0_0_20px_rgba(180,83,9,0.45)] p-0.5 shrink-0 transition-all duration-300 group-hover:-translate-y-1.5 group-hover:scale-150">
+              <img src="Assets/3thReward-removebg-preview.png" alt="🥉" class="w-full h-full object-contain"
+                onerror="handleIconError(this)">
+              <span class="hidden text-xl">🥉</span>
+            </div>
+            <div>
+              <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">3rd Place / 3η Θέση</div>
+              <div class="text-base font-black text-amber-600 flex items-center gap-1.5">
+                500
+                <img src="prism.png" alt="Prisms" class="w-4 h-4 object-contain" onerror="handleIconError(this)">
+                <span class="hidden text-xs font-medium text-slate-400">Prisms</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4th Place -->
+          <div class="glass-card rounded-xl p-4 flex items-center gap-3 border border-teal-500/10 group cursor-pointer">
+            <div
+              class="w-14 h-14 rounded-full bg-teal-500/10 flex items-center justify-center shadow-[0_0_12px_rgba(20,184,166,0.2)] group-hover:shadow-[0_0_20px_rgba(20,184,166,0.45)] p-0.5 shrink-0 transition-all duration-300 group-hover:-translate-y-1.5 group-hover:scale-150">
+              <img src="Assets/4thReward-removebg-preview.png" alt="🏅" class="w-full h-full object-contain"
+                onerror="handleIconError(this)">
+              <span class="hidden text-xl">🏅</span>
+            </div>
+            <div>
+              <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">4th Place / 4η Θέση</div>
+              <div class="text-xs font-black text-teal-400 leading-tight">
+                Δωρεάν Συμμετοχή
+                <span class="text-[10px] font-semibold text-slate-400 block mt-0.5 flex items-center gap-0.5">
+                  +100
+                  <img src="prism.png" alt="Prisms" class="w-3.5 h-3.5 object-contain" onerror="handleIconError(this)">
+                  <span class="hidden text-[9px] text-slate-400">Prisms</span>
+                </span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Bracket Board -->
-    <div id="bracket-board" class="flex justify-between items-start min-w-[1150px] gap-6 relative py-4">
-      
-      <!-- SVG Drawing Layer -->
-      <svg id="bracket-svg" class="absolute inset-0 pointer-events-none w-full h-full z-0">
-        <defs>
-          <filter id="glow-blue" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="3" result="blur" />
-            <feComposite in="SourceGraphic" in2="blur" operator="over" />
-          </filter>
-          <filter id="glow-emerald" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="3" result="blur" />
-            <feComposite in="SourceGraphic" in2="blur" operator="over" />
-          </filter>
-          <filter id="glow-purple" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="3" result="blur" />
-            <feComposite in="SourceGraphic" in2="blur" operator="over" />
-          </filter>
-          <filter id="glow-amber" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="4" result="blur" />
-            <feComposite in="SourceGraphic" in2="blur" operator="over" />
-          </filter>
-        </defs>
-      </svg>
-      
+      <!-- Bracket Board -->
+      <div id="bracket-board" class="flex justify-between items-start min-w-[1150px] gap-6 relative py-4">
+
+        <!-- SVG Drawing Layer -->
+        <svg id="bracket-svg" class="absolute inset-0 pointer-events-none w-full h-full z-0">
+          <defs>
+            <filter id="glow-blue" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+            <filter id="glow-emerald" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+            <filter id="glow-purple" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+            <filter id="glow-amber" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="4" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+          </defs>
+        </svg>
 
 
-      <!-- ROUND OF 16 -->
-      <div class="flex flex-col w-48 shrink-0 snap-center">
-        <div class="text-xs font-black tracking-widest text-blue-400 uppercase text-center mb-6">ROUND OF 16</div>
-        <div class="flex flex-col gap-[14px]">
-        <div class="glass-card rounded-xl p-2 relative z-10">
-          <div id="p1" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">PLAYER1</div>
-          <div id="p2" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">PLAYER2</div>
+
+        <!-- ROUND OF 16 -->
+        <div class="flex flex-col w-48 shrink-0 snap-center">
+          <div class="text-xs font-black tracking-widest text-blue-400 uppercase text-center mb-6">ROUND OF 16</div>
+          <div class="flex flex-col gap-[14px]">
+            <div class="glass-card rounded-xl p-2 relative z-10">
+              <div id="p1"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">
+                PLAYER1</div>
+              <div id="p2"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">
+                PLAYER2</div>
+            </div>
+            <div class="glass-card rounded-xl p-2 relative z-10">
+              <div id="p3"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">
+                PLAYER3</div>
+              <div id="p4"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">
+                PLAYER4</div>
+            </div>
+            <div class="glass-card rounded-xl p-2 relative z-10">
+              <div id="p5"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">
+                PLAYER5</div>
+              <div id="p6"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">
+                PLAYER6</div>
+            </div>
+            <div class="glass-card rounded-xl p-2 relative z-10">
+              <div id="p7"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">
+                PLAYER7</div>
+              <div id="p8"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">
+                PLAYER8</div>
+            </div>
+            <div class="glass-card rounded-xl p-2 relative z-10">
+              <div id="p9"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">
+                PLAYER9</div>
+              <div id="p10"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">
+                PLAYER10</div>
+            </div>
+            <div class="glass-card rounded-xl p-2 relative z-10">
+              <div id="p11"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">
+                PLAYER11</div>
+              <div id="p12"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">
+                PLAYER12</div>
+            </div>
+            <div class="glass-card rounded-xl p-2 relative z-10">
+              <div id="p13"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">
+                PLAYER13</div>
+              <div id="p14"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">
+                PLAYER14</div>
+            </div>
+            <div class="glass-card rounded-xl p-2 relative z-10">
+              <div id="p15"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">
+                PLAYER15</div>
+              <div id="p16"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">
+                PLAYER16</div>
+            </div>
+          </div>
         </div>
-        <div class="glass-card rounded-xl p-2 relative z-10">
-          <div id="p3" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">PLAYER3</div>
-          <div id="p4" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">PLAYER4</div>
+
+        <!-- QUARTERFINALS -->
+        <div class="flex flex-col w-48 shrink-0 snap-center">
+          <div class="text-xs font-black tracking-widest text-emerald-400 uppercase text-center mb-6">QUARTERFINALS
+          </div>
+          <div class="flex flex-col gap-[132px] pt-[25px]">
+            <div class="glass-card rounded-xl p-2 relative z-10">
+              <div id="q1"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">
+                ???</div>
+              <div id="q2"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">
+                ???</div>
+            </div>
+            <div class="glass-card rounded-xl p-2 relative z-10">
+              <div id="q3"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">
+                ???</div>
+              <div id="q4"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">
+                ???</div>
+            </div>
+            <div class="glass-card rounded-xl p-2 relative z-10">
+              <div id="q5"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">
+                ???</div>
+              <div id="q6"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">
+                ???</div>
+            </div>
+            <div class="glass-card rounded-xl p-2 relative z-10">
+              <div id="q7"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">
+                ???</div>
+              <div id="q8"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">
+                ???</div>
+            </div>
+          </div>
         </div>
-        <div class="glass-card rounded-xl p-2 relative z-10">
-          <div id="p5" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">PLAYER5</div>
-          <div id="p6" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">PLAYER6</div>
+
+        <!-- SEMIFINALS -->
+        <div class="flex flex-col w-48 shrink-0 snap-center">
+          <div class="text-xs font-black tracking-widest text-purple-400 uppercase text-center mb-6">SEMIFINALS</div>
+          <div class="flex flex-col gap-[368px] pt-[143px]">
+            <div class="glass-card rounded-xl p-2 relative z-10">
+              <div id="sf1"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">
+                ???</div>
+              <div id="sf2"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">
+                ???</div>
+            </div>
+            <div class="glass-card rounded-xl p-2 relative z-10">
+              <div id="sf3"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">
+                ???</div>
+              <div id="sf4"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">
+                ???</div>
+            </div>
+          </div>
         </div>
-        <div class="glass-card rounded-xl p-2 relative z-10">
-          <div id="p7" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">PLAYER7</div>
-          <div id="p8" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">PLAYER8</div>
+
+        <!-- FINALS -->
+        <div class="flex flex-col w-48 shrink-0 snap-center">
+          <div class="text-xs font-black tracking-widest text-amber-500 uppercase text-center mb-6">FINALS</div>
+          <div class="flex flex-col pt-[379px]">
+            <div class="glass-card rounded-xl p-2 relative z-10">
+              <div id="f1"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">
+                ???</div>
+              <div id="f2"
+                class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">
+                ???</div>
+            </div>
+          </div>
         </div>
-        <div class="glass-card rounded-xl p-2 relative z-10">
-          <div id="p9" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">PLAYER9</div>
-          <div id="p10" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">PLAYER10</div>
+
+        <!-- CHAMPION -->
+        <div class="flex flex-col w-52 shrink-0 snap-center">
+          <div class="text-xs font-black tracking-widest text-amber-500 uppercase text-center mb-6">CHAMPION</div>
+          <div class="flex flex-col items-center pt-[330px]">
+            <div class="relative flex items-center justify-center mb-4 group cursor-pointer">
+              <div class="absolute w-24 h-24 bg-purple-500/20 rounded-full blur-md animate-pulse"></div>
+              <div
+                class="relative w-20 h-20 rounded-full flex items-center justify-center shadow-[0_0_25px_rgba(168,85,247,0.4)] animate-float transition-all duration-300 group-hover:scale-150">
+                <img src="Assets/CHAMPION.png" alt="Champion Trophy" class="w-full h-full object-contain">
+              </div>
+            </div>
+            <div class="w-full glass-card rounded-xl p-2 relative z-10">
+              <div id="winner"
+                class="bg-slate-900/40 border border-slate-800/60 text-slate-400 px-3 py-2 rounded-lg text-sm font-bold text-center uppercase tracking-wider truncate transition-all duration-300">
+                🏆 CHAMPION
+              </div>
+            </div>
+
+            <!-- Podium Standings -->
+            <div id="podium-card"
+              class="w-full glass-card rounded-xl p-3 mt-4 border border-slate-800/60 flex flex-col gap-2 relative z-10 hidden">
+              <div
+                class="text-[9px] font-black text-slate-500 uppercase tracking-widest text-center border-b border-slate-800/50 pb-1.5 mb-1">
+                🏆 Final Standings
+              </div>
+              <!-- 1st Place -->
+              <div
+                class="flex items-center justify-between text-xs font-bold text-amber-400 bg-amber-500/5 px-2 py-1 rounded-md border border-amber-500/10">
+                <span>🥇 1st</span>
+                <span id="podium-1st" class="uppercase truncate max-w-[110px] text-right">???</span>
+              </div>
+              <!-- 2nd Place -->
+              <div
+                class="flex items-center justify-between text-xs font-semibold text-slate-300 bg-slate-400/5 px-2 py-1 rounded-md border border-slate-400/10">
+                <span>🥈 2nd</span>
+                <span id="podium-2nd" class="uppercase truncate max-w-[110px] text-right">???</span>
+              </div>
+              <!-- 3rd Place -->
+              <div
+                class="flex items-center justify-between text-xs font-semibold text-amber-700 bg-amber-700/5 px-2 py-1 rounded-md border border-amber-700/10">
+                <span>🥉 3rd</span>
+                <span id="podium-3rd" class="uppercase truncate max-w-[110px] text-right">???</span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="glass-card rounded-xl p-2 relative z-10">
-          <div id="p11" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">PLAYER11</div>
-          <div id="p12" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">PLAYER12</div>
-        </div>
-        <div class="glass-card rounded-xl p-2 relative z-10">
-          <div id="p13" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">PLAYER13</div>
-          <div id="p14" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">PLAYER14</div>
-        </div>
-        <div class="glass-card rounded-xl p-2 relative z-10">
-          <div id="p15" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">PLAYER15</div>
-          <div id="p16" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">PLAYER16</div>
-        </div>
+
       </div>
     </div>
 
-    <!-- QUARTERFINALS -->
-    <div class="flex flex-col w-48 shrink-0 snap-center">
-      <div class="text-xs font-black tracking-widest text-emerald-400 uppercase text-center mb-6">QUARTERFINALS</div>
-      <div class="flex flex-col gap-[132px] pt-[25px]">
-        <div class="glass-card rounded-xl p-2 relative z-10">
-          <div id="q1" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">???</div>
-          <div id="q2" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">???</div>
-        </div>
-        <div class="glass-card rounded-xl p-2 relative z-10">
-          <div id="q3" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">???</div>
-          <div id="q4" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">???</div>
-        </div>
-        <div class="glass-card rounded-xl p-2 relative z-10">
-          <div id="q5" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">???</div>
-          <div id="q6" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">???</div>
-        </div>
-        <div class="glass-card rounded-xl p-2 relative z-10">
-          <div id="q7" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">???</div>
-          <div id="q8" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">???</div>
-        </div>
+    <!-- Right Flanking Image -->
+    <div class="hidden xl:flex flex-col items-center justify-center w-48 shrink-0 group cursor-pointer">
+      <div class="w-full transition-all duration-300 ease-out group-hover:-translate-y-3">
+        <img src="Assets/GREEKFREAK.jpeg" alt="GREEKFREAK"
+          class="w-full rounded-2xl border border-slate-800/80 shadow-[0_0_25px_rgba(145,70,255,0.15)] group-hover:shadow-[0_0_35px_rgba(145,70,255,0.3)] object-cover aspect-square transition-all duration-300">
       </div>
-    </div>
-
-    <!-- SEMIFINALS -->
-    <div class="flex flex-col w-48 shrink-0 snap-center">
-      <div class="text-xs font-black tracking-widest text-purple-400 uppercase text-center mb-6">SEMIFINALS</div>
-      <div class="flex flex-col gap-[368px] pt-[143px]">
-        <div class="glass-card rounded-xl p-2 relative z-10">
-          <div id="sf1" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">???</div>
-          <div id="sf2" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">???</div>
-        </div>
-        <div class="glass-card rounded-xl p-2 relative z-10">
-          <div id="sf3" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">???</div>
-          <div id="sf4" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">???</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- FINALS -->
-    <div class="flex flex-col w-48 shrink-0 snap-center">
-      <div class="text-xs font-black tracking-widest text-amber-500 uppercase text-center mb-6">FINALS</div>
-      <div class="flex flex-col pt-[379px]">
-        <div class="glass-card rounded-xl p-2 relative z-10">
-          <div id="f1" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate transition-all duration-300">???</div>
-          <div id="f2" class="bg-slate-900/40 border border-slate-800/60 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 uppercase truncate mt-1.5 transition-all duration-300">???</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- CHAMPION -->
-    <div class="flex flex-col w-52 shrink-0 snap-center">
-      <div class="text-xs font-black tracking-widest text-amber-500 uppercase text-center mb-6">CHAMPION</div>
-      <div class="flex flex-col items-center pt-[330px]">
-        <div class="relative flex items-center justify-center mb-4 group cursor-pointer">
-          <div class="absolute w-24 h-24 bg-purple-500/20 rounded-full blur-md animate-pulse"></div>
-          <div class="relative w-20 h-20 rounded-full flex items-center justify-center shadow-[0_0_25px_rgba(168,85,247,0.4)] animate-float transition-all duration-300 group-hover:scale-150">
-            <img src="Assets/CHAMPION.png" alt="Champion Trophy" class="w-full h-full object-contain">
-          </div>
-        </div>
-        <div class="w-full glass-card rounded-xl p-2 relative z-10">
-          <div id="winner" class="bg-slate-900/40 border border-slate-800/60 text-slate-400 px-3 py-2 rounded-lg text-sm font-bold text-center uppercase tracking-wider truncate transition-all duration-300">
-            🏆 CHAMPION
-          </div>
-        </div>
-
-        <!-- Podium Standings -->
-        <div id="podium-card" class="w-full glass-card rounded-xl p-3 mt-4 border border-slate-800/60 flex flex-col gap-2 relative z-10 hidden">
-          <div class="text-[9px] font-black text-slate-500 uppercase tracking-widest text-center border-b border-slate-800/50 pb-1.5 mb-1">
-            🏆 Final Standings
-          </div>
-          <!-- 1st Place -->
-          <div class="flex items-center justify-between text-xs font-bold text-amber-400 bg-amber-500/5 px-2 py-1 rounded-md border border-amber-500/10">
-            <span>🥇 1st</span>
-            <span id="podium-1st" class="uppercase truncate max-w-[110px] text-right">???</span>
-          </div>
-          <!-- 2nd Place -->
-          <div class="flex items-center justify-between text-xs font-semibold text-slate-300 bg-slate-400/5 px-2 py-1 rounded-md border border-slate-400/10">
-            <span>🥈 2nd</span>
-            <span id="podium-2nd" class="uppercase truncate max-w-[110px] text-right">???</span>
-          </div>
-          <!-- 3rd Place -->
-          <div class="flex items-center justify-between text-xs font-semibold text-amber-700 bg-amber-700/5 px-2 py-1 rounded-md border border-amber-700/10">
-            <span>🥉 3rd</span>
-            <span id="podium-3rd" class="uppercase truncate max-w-[110px] text-right">???</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
+      <span
+        class="text-[10px] font-black uppercase tracking-widest text-slate-500 group-hover:text-purple-400 transition-colors duration-300 mt-3 block">
+        GREEKFREAK
+      </span>
     </div>
   </div>
-
-  <!-- Right Flanking Image -->
-  <div class="hidden xl:flex flex-col items-center justify-center w-48 shrink-0 group cursor-pointer">
-    <div class="w-full transition-all duration-300 ease-out group-hover:-translate-y-3">
-      <img src="Assets/GREEKFREAK.jpeg" alt="GREEKFREAK" class="w-full rounded-2xl border border-slate-800/80 shadow-[0_0_25px_rgba(145,70,255,0.15)] group-hover:shadow-[0_0_35px_rgba(145,70,255,0.3)] object-cover aspect-square transition-all duration-300">
-    </div>
-    <span class="text-[10px] font-black uppercase tracking-widest text-slate-500 group-hover:text-purple-400 transition-colors duration-300 mt-3 block">
-      GREEKFREAK
-    </span>
-  </div>
-</div>
 
   <!-- Footer -->
-  <footer class="mt-8 pb-8 text-center text-[10px] text-slate-600 font-bold uppercase tracking-widest flex items-center justify-center gap-1.5">
+  <footer
+    class="mt-8 pb-8 text-center text-[10px] text-slate-600 font-bold uppercase tracking-widest flex items-center justify-center gap-1.5">
     <span>Powered by</span>
-    <a href="https://www.twitch.tv/blackcanary_007" target="_blank" rel="noopener noreferrer" class="text-slate-500 hover:text-rose-500 flex items-center gap-1 transition duration-300">
+    <a href="https://www.twitch.tv/blackcanary_007" target="_blank" rel="noopener noreferrer"
+      class="text-slate-500 hover:text-rose-500 flex items-center gap-1 transition duration-300">
       <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
-        <path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/>
+        <path
+          d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z" />
       </svg>
       <span>BlackCanary007</span>
     </a>
@@ -513,10 +643,10 @@
     function applyDynamicStyles() {
       // Reset all slots to default state
       const allSlotIds = [
-        'p1','p2','p3','p4','p5','p6','p7','p8','p9','p10','p11','p12','p13','p14','p15','p16',
-        'q1','q2','q3','q4','q5','q6','q7','q8',
-        'sf1','sf2','sf3','sf4',
-        'f1','f2'
+        'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10', 'p11', 'p12', 'p13', 'p14', 'p15', 'p16',
+        'q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8',
+        'sf1', 'sf2', 'sf3', 'sf4',
+        'f1', 'f2'
       ];
 
       allSlotIds.forEach(id => {
@@ -681,4 +811,5 @@
     updateCountdown();
   </script>
 </body>
+
 </html>
